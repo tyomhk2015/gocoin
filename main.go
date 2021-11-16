@@ -2,18 +2,14 @@ package main
 
 import (
 	"fmt"
-	"reflect"
+
+	"github.com/tyomhk2015/gocoin/person"
 )
 
 func main() {
-	// sing("A", "B", "C")
-	randomNum := -127
-	// randomLetter := 'a'
-	// fmt.Printf("Left: %b, Right: %b", randomNum, randomLetter)
-	fmt.Println(fmt.Sprintf("%x", randomNum), ":", reflect.TypeOf(fmt.Sprintf("%x", randomNum)))
-
-	sheep := talent{"Watame", "JP"}
-	sheep.stream(11)
+	vtuber := person.Person{}
+	vtuber.Set("Kiryu", 999)
+	fmt.Println("This talent is", vtuber)
 }
 
 func sing(shiny, smile, story string) {
