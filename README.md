@@ -4,6 +4,8 @@ Building crypto currency with Go lang.
 <a href="#user-content-day1">Day 1</a>　2021/11/15
 * Warming up: reviewed the fundamentals of Go.
 
+<a href="#user-content-day2">Day 2</a>　2021/11/16
+* Warming up: reviewed the fundamentals of Go, structs & pointer.
 
 <hr>
 
@@ -46,7 +48,7 @@ fmt.Println(
 // -7f : string
 </pre>
 
-* Methods / Receiver function : Adding a functon to struct.
+* Methods / Receiver function : Adding a functon to struct, similar to getter/setter in Java.
 <br>
 (Condition) The method or func must have struct written right after the keyword 'func'.
 <pre>
@@ -66,3 +68,14 @@ func main() {
 
 // Return: Watame's stream starts at 11 pm, JP.
 </pre>
+
+### **<a href="javascript:void(0);" id="day2">Day 2</a>** ☀️
+2021/11/16
+
+#### 💡 **Structs & Pointer**
+
+* Uppercase = Exportable
+* Lowercase = Not exportable, private.
+
+🖉 The GOPATH setting that I wrote during the 'go_basics' can be ignored. go.mod file handles the enviorment path of go. 
+
