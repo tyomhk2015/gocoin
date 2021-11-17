@@ -7,6 +7,9 @@ Building crypto currency with Go lang.
 <a href="#user-content-day2">Day 2</a>　2021/11/16
 * Warming up: reviewed the fundamentals of Go, structs & pointer.
 
+<a href="#user-content-day3">Day 3</a>　2021/11/17
+* Blockchain theo
+
 <hr>
 
 #### Resource 📖
@@ -30,9 +33,7 @@ func sing(shiny string, smile string, story string) {}
 func sing(shiny, smile, story string) {}
 </pre>
 
-* <a href="https://pkg.go.dev/fmt">fmt</a>: Format a string/letter in either digit, binary, or as string. Useful for change the data into a different form.
-<br>
-I think this may become handy when serialization is needed. 🤔
+* <a href="https://pkg.go.dev/fmt">fmt</a>: Format a string/letter in either digit, binary, or as string. Useful for change the data into a different form.<br>I think this may become handy when serialization is needed. 🤔
 <pre>
 randomNum := -127
 randomLetter := 'a'
@@ -48,8 +49,7 @@ fmt.Println(
 // -7f : string
 </pre>
 
-* Methods / Receiver function : Adding a functon to struct, similar to getter/setter in Java.
-<br>
+* Methods / Receiver function : Adding a functon to struct, similar to getter/setter in Java.<br>
 (Condition) The method or func must have struct written right after the keyword 'func'.
 <pre>
 type talent struct {
@@ -69,6 +69,8 @@ func main() {
 // Return: Watame's stream starts at 11 pm, JP.
 </pre>
 
+<hr>
+
 ### **<a href="javascript:void(0);" id="day2">Day 2</a>** ☀️
 2021/11/16
 
@@ -78,4 +80,23 @@ func main() {
 * Lowercase = Not exportable, private.
 
 🖉 The GOPATH setting that I wrote during the 'go_basics' can be ignored. go.mod file handles the enviorment path of go. 
+
+<hr>
+
+
+### **<a href="javascript:void(0);" id="day3">Day 3</a>** ☀️
+2021/11/17
+
+* Blockchain Notes
+- Smart Contract
+- Main chain & side chain
+- NFT (Non-fungible Token)
+- Decentralization
+- Consensus mechanism
+- Proof of work
+- Proof of stake
+
+All the notes about terms will be stored in my <a href="https://github.com/tyomhk2015/gocoin/blob/main/terms/terms.md">terms folder</a>. 📂
+
+
 
