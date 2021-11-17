@@ -3,7 +3,7 @@
 - <a href="#user-content-blockchain">Blockchain</a>
 - <a href="#user-content-append">Append</a>
 - <a href="#user-content-decentralization">Decentralization</a>
-- <a href="#user-content-previousblockHash">Previous block hash</a>
+- <a href="#user-content-previousblockhash">Previous block hash</a>
 - <a href="#user-content-blockdata">Block data</a>
 - <a href="#user-content-proofofwork">Proof of work</a>
 - <a href="#user-content-mining">Mining</a>
