@@ -7,8 +7,16 @@
 - <a href="#user-content-blockdata">Block data</a>
 - <a href="#user-content-proofofwork">Proof of work</a>
 - <a href="#user-content-mining">Mining</a>
+- <a href="#user-content-nonce">Nonce</a>
+- <a href="#user-content-miningdifficulty">Mining Difficulty</a>
 - <a href="#user-content-ethereum">Ethereum</a>
 - <a href="#user-content-smartcontract">Smart Contract</a>
+- <a href="#user-content-nft">NFT</a>
+- <a href="#user-content-nft">Wallet</a>
+- <a href="#user-content-defi">DeFi</a>
+- <a href="#user-content-dex">DEX</a>
+- <a href="#user-content-stablecoin">Stable Coin</a>
+- <a href="#user-content-cons">Cons of crypto currencies</a>
 
 <hr>
 
@@ -80,22 +88,115 @@ In order to join a blockchain, your block needs to collect all the data related 
 
 > Proof of work
 
+A system of verifying if a new data (block) is reliable or truthy for joining the chain.<br><br>
+`Miner` is related to the 'proof of work'.<br>
+Verifying is done by asking some questions to miners. If miners get correct answers, miners are eligible for appending a new block to the chain.<br>
+The questions are known to all nodes on the blockchain.<br><br>
+
+`Verifying blocks are relatively easier than answering questions.`
+
 <br id="mining">
 
-> Mining
+> Mining / Miner
+
+The worker that verifies, create block, and appends block to the chain.<br><br>
+E.g: A bank teller, who verifies records of people's balance, creates transaction, proceeds loan etc. Similar to interface.<br><br>
+If miners successfuly helps transaction, they get commission or transfer fee, like Bitcoin.<br><br>
+Miners recieves commission for verifying transaction, and Bitcoin(`coinbase transaction`) for solving hash questions and adding a block to the chain.<br><br>
+Miners cannot change any data in a block except `nonce`.
 
 <br id="nonce">
 
 > Nonce
 
+A number used only once.<br><br>
+
+Number of trials for getting correct answer, the `hash`, for the question that miner has gotten. This is during the process of verifying the new block coming into the chain.
+
 <br id="miningdifficulty">
 
 > Mining Difficulty
+
+Indicator of the difficulty of obtaining coins, `bits` are used for this.<br>
+It's like having a lot of `if` conditions to be satisfied for getting the coins as reward.<br>
+If blocks are added to the chain fast, the difficulty gets harder.<br>
 
 <br id="ethereum">
 
 > Ethereum
 
+One of the types of smart contract.
+
 <br id="smartcontract">
 
 > Smart Contract
+
+A system that people interact with each other by having a automated code or entity as an interface.<br><br>
+In developer's perspective, the code you've written gets uploaded a server that is decentralized. This means your code is likely to be verified by the blockchain's security and be used by many people/nodes on the blockchain.
+
+Pros ✔️
+
+* No middle stages are needed.
+
+Practical assumption:<br>
+* When buying a piece of land or a building, real estate agency will not be needed because the codes in the blockchain will verify the transaction between the buyer and the seller.
+* When changing real currency, you won't need a bank anymore.
+* In the court, the cases can be judged without any personal bias.
+
+Cons ❌
+
+* Smart contract only works under their own network.
+* Changing inputs in smart contracts are not allowed. However, `Oracle` gets in the middle of the smart contract and allows to change the input.
+
+<br id="nft">
+
+> NFT: Non-Fungible Token
+
+A token that cannot be exchangable with other things.<br>
+Think NTF as the only one coin that exists in the world.<br>
+Pros ✔️: Guarantees the originality / ownership of certain token, or goods.
+
+<br id="wallet"> 
+
+> Wallet 
+
+Consist of a `public key` (a lock 🔒) and a `private key` (key to open the lock 🔑).<br>
+Create with asymmetric encryption.
+<br>
+(Not symmetric, where things can correspond to each other.)
+<br><br>
+The `private key` is the most important part of the blockchain transaction.<br>
+Careless management of the private key may make you lose all the coins you possess.
+<br><br>
+To transact or trade some coin or stuff on the blockchain, the sender packs some consensus contract and his/her own public key together. <br>
+Then the sender locks the whole thing with receiver's public key.<br>
+When the receiver gets the package, he/she opens it with his/her own private key.
+
+<br id="defi">
+
+> DeFi: Decentralized Finanace
+
+Banks without centralized system and real human tellers.<br><br>
+No centeralized system: Barely gets account locked or banned.<br>
+No real human: No commission fee or no manipulation during transaction.
+
+
+<br id="dex">
+
+> DEX: Decentralized Exchange
+
+There is no middle man b/ buyer and seller.<br>
+Exchange process is done by smart contracts, or code, not by people.
+
+
+<br id="stablecoin">
+
+> Stable Coin
+
+One crypto currency's value is equal or nearly same as a dollar.<br>
+This is can be used for smart contracts.
+
+<br id="cons">
+
+> Cons of crypto currencies
+
