@@ -7,8 +7,8 @@ Building crypto currency with Go lang.
 <a href="#user-content-day2">Day 2</a>　2021/11/16
 * Warming up: reviewed the fundamentals of Go, structs & pointer.
 
-<a href="#user-content-day3">Day 3</a>　2021/11/17
-* Blockchain theo
+<a href="#user-content-day3">Day 3</a> ~ Day 5　2021/11/17 ~ 2021/11/19
+* Taking <a href="https://github.com/tyomhk2015/gocoin/blob/main/terms/terms.md">notes</a> about concepts related to blockchain. 
 
 <hr>
 
@@ -88,6 +88,7 @@ func main() {
 2021/11/17
 
 * Blockchain Notes
+
 - Smart Contract
 - Main chain & side chain
 - NFT (Non-fungible Token)
@@ -95,6 +96,7 @@ func main() {
 - Consensus mechanism
 - Proof of work
 - Proof of stake
+- ...
 
 All the notes about terms will be stored in my <a href="https://github.com/tyomhk2015/gocoin/blob/main/terms/terms.md">terms folder</a>. 📂
 
