@@ -17,6 +17,10 @@
 - <a href="#user-content-dex">DEX</a>
 - <a href="#user-content-stablecoin">Stable Coin</a>
 - <a href="#user-content-cons">Cons of crypto currencies</a>
+- <a href="#user-content-1stgeneration">The first generation blockchain</a>
+- <a href="#user-content-2ndgeneration">The second generation blockchain</a>
+- <a href="#user-content-3rdgeneration">The third generation blockchain</a>
+- <a href="#user-content-3rdgeneration">The scalability trilemma</a>
 
 <hr>
 
@@ -50,7 +54,7 @@ Adding blocks to chains is the environment of the blockchain.
 
 The system where one cannot control the whole database by oneself.<br><br>
 People connect to a blockchain will have `same` copy of databases in their computers, nodes. <br>
-Therefore, deleting or updating certain data will not be possible, unless more than a half of all computers in the blockchain shutdown.<br><br>
+Therefore, deleting or updating certain data will not be possible, unless someone takes more than a half of all computering power in the blockchain.<br><br>
 Pretty useful for preventing from manipulated data, such as a house contract, currency, government's censorship etc, you name it.
 
 <br id="blockhash">
@@ -200,3 +204,43 @@ This is can be used for smart contracts.
 
 > Cons of crypto currencies
 
+* Too much electrical power is required to gain / transfer the currency from one wallet to the another one, which is not eco-friendly. The power usage, during stage of the `proof of work`, is intense.
+
+* Government has power to prohibit the crypto currency markets, like Binance, Upbit, Coinone etc.
+
+* Anonymous makes the crypto currency used for illegal activities, such as drugs.
+
+* When trying to buy some goods with your crypto currency, you have to reveal all the transaction history and be verified before actually paying with the currency, such as buying a latte in Starbucks.
+
+<br id="1stgeneration">
+
+> The first generation blockchain
+
+Use `proof of work` as security.<br>
+E.g: The goal of `Bitcoin` was to create a money that no one could hack.<br>
+The `proof of work` requires a lot of computational powers, which causes some ecological problems, such as electrical power.<br>
+Does not have programable features, only transactions are possible.
+
+<br id="2ndgeneration">
+
+> The 2nd generation blockchain
+
+Use `smart contracts`. E.g: Ethereum.<br>
+The goal of Ethereum is to create world-shared-computer.<br>
+
+1st & 2nd generation blockchain 
+
+<br id="3rdgeneration">
+
+> The 3nd generation blockchain
+
+The blockchain that satisfies the three factors of `the scalability trilemma`, scalability, decentralization, and security.<br>
+E.g: Ethereum 2.0
+
+<br id="trilemma">
+
+> The scalability trilemma
+
+<img src="https://i.imgur.com/TAjfVev.png" alt="The scalability trilemma" />
+
+Introduces the three factors that crypto currencies should have.
