@@ -11,7 +11,7 @@ Building crypto currency with Go lang.
 * Taking <a href="https://github.com/tyomhk2015/gocoin/blob/main/terms/terms.md">notes</a> about concepts related to blockchain. 
 
 <a href="#user-content-day7">Day 7</a>　2021/11/21
-* My first blockchain.
+* My first blockchain. <a href="https://github.com/tyomhk2015/gocoin/tree/main/blockchain">Source Code</a>
 
 <hr>
 
@@ -106,4 +106,4 @@ All the notes about terms will be stored in my <a href="https://github.com/tyomh
 ### **<a href="javascript:void(0);" id="day7">Day 7</a>** ☀️
 2021/11/21
 
-* Created my first mini blockchain.
+* Created my first blockchain. <a href="https://github.com/tyomhk2015/gocoin/tree/main/blockchain">Source Code</a>
