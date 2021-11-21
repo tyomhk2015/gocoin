@@ -1,4 +1,4 @@
-package blockchain
+package main
 
 import (
 	"github.com/tyomhk2015/gocoin/blockchain/blockchain"
