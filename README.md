@@ -7,8 +7,11 @@ Building crypto currency with Go lang.
 <a href="#user-content-day2">Day 2</a>　2021/11/16
 * Warming up: reviewed the fundamentals of Go, structs & pointer.
 
-<a href="#user-content-day3">Day 3</a> ~ Day 5　2021/11/17 ~ 2021/11/19
+<a href="#user-content-day3">Day 3</a> ~ Day 6　2021/11/17 ~ 2021/11/20
 * Taking <a href="https://github.com/tyomhk2015/gocoin/blob/main/terms/terms.md">notes</a> about concepts related to blockchain. 
+
+<a href="#user-content-day7">Day 7</a>　2021/11/21
+* My first blockchain.
 
 <hr>
 
@@ -100,5 +103,7 @@ func main() {
 
 All the notes about terms will be stored in my <a href="https://github.com/tyomhk2015/gocoin/blob/main/terms/terms.md">terms folder</a>. 📂
 
+### **<a href="javascript:void(0);" id="day7">Day 7</a>** ☀️
+2021/11/21
 
-
+* Created my first mini blockchain.
