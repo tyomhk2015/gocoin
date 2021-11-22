@@ -142,3 +142,4 @@ func handleAdd(rw http.ResponseWriter, r *http.Request) {
 
 * Finished creating a web application w/ blockchain feature. <a href="https://github.com/tyomhk2015/gocoin/tree/main/goserver">Source Code</a>
 
+![gocoin](https://user-images.githubusercontent.com/35278730/142892010-5b8b20a4-629f-4969-a683-52648a1a29d2.gif)
