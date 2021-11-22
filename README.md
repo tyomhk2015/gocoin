@@ -13,6 +13,9 @@ Building crypto currency with Go lang.
 <a href="#user-content-day7">Day 7</a>　2021/11/21
 * My first blockchain. <a href="https://github.com/tyomhk2015/gocoin/tree/main/blockchain">Source Code</a>
 
+<a href="#user-content-day8">Day 8</a>　2021/11/22
+* Created a http server with Go, using Go's standard library. 
+
 <hr>
 
 #### Resource 📖
@@ -107,3 +110,35 @@ All the notes about terms will be stored in my <a href="https://github.com/tyomh
 2021/11/21
 
 * Created my first blockchain. <a href="https://github.com/tyomhk2015/gocoin/tree/main/blockchain">Source Code</a>
+
+### **<a href="javascript:void(0);" id="day8">Day 8</a>** ☀️
+2021/11/22
+
+* Created http server-side with Go, using Go's standard library.
+
+* The `lowercase` variables also cannot be referred by parsing files, such as `html/template`.<br>
+In other words, referring a title of the root page from Go with lowercase variable will give you nothing in return, because the lowercase cannot be accessed from outside of the file where the variable has been declared.
+
+* Used html/template, standard library, for inserting Go data into a HTML template.<br>`Must()` is used for checking errors during the parsing of files w/ the template library.
+
+* <a href="https://andybrewer.github.io/mvp/">MVPCSS</a>, an external CSS for focusing more on the logic of the project.<br>No CSS class names are required.
+
+* When variable is conveyed from Go file to template, the first element that wants the variables must be written as `{{.Variable}}`. If you want to send the received variable to the children elements, it should be written as `{{.}}`. Commenting out is also possible.
+
+* When taking an action or accessing specific route, the one request can have different method.
+
+<pre>
+http.HandleFunc("/add", handleAdd)
+
+func handleAdd(rw http.ResponseWriter, r *http.Request) {
+  switch r.Method {
+  case "GET":
+    ...
+  case "POST":
+    ...
+  }
+}
+</pre>
+
+* Finished creating a web application w/ blockchain feature. <a href="https://github.com/tyomhk2015/gocoin/tree/main/goserver">Source Code</a>
+

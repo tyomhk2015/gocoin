@@ -13,14 +13,14 @@ import (
 	"sync"
 )
 
-type block struct {
-	data         string
-	hash         string
-	previousHash string
+type Block struct {
+	Data         string
+	Hash         string
+	PreviousHash string
 }
 
 type blockchain struct {
-	blocks []*block
+	blocks []*Block
 }
 
 // Can be used for only in the 'blockchain' package.
@@ -43,14 +43,14 @@ func GetBlockchain() *blockchain {
 	return b
 }
 
-func createBlock(data string) *block {
-	newBlock := block{data, "", getPreviousHash()}
-	newBlock.hash = newBlock.createHash()
+func createBlock(data string) *Block {
+	newBlock := Block{data, "", getPreviousHash()}
+	newBlock.Hash = newBlock.createHash()
 	return &newBlock
 }
 
-func (b *block) createHash() string {
-	hash := sha256.Sum256([]byte(b.data + b.previousHash))
+func (b *Block) createHash() string {
+	hash := sha256.Sum256([]byte(b.Data + b.PreviousHash))
 	return fmt.Sprintf("%x", hash)
 }
 
@@ -59,15 +59,13 @@ func getPreviousHash() string {
 	if totalBlocks == 0 {
 		return ""
 	}
-	return GetBlockchain().blocks[totalBlocks-1].hash
+	return GetBlockchain().blocks[totalBlocks-1].Hash
 }
 
 func (b *blockchain) AddBlock(data string) {
 	b.blocks = append(b.blocks, createBlock(data))
 }
 
-func (b *blockchain) ShowAllBlocks() {
-	for _, block := range b.blocks {
-		fmt.Printf("Data: %s\nHash: %s\nPervious Hash: %s\n\n", block.data, block.hash, block.previousHash)
-	}
+func (b *blockchain) ShowAllBlocks() []*Block {
+	return b.blocks
 }
