@@ -1,6 +1,7 @@
 package explorer
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"text/template"
@@ -8,18 +9,19 @@ import (
 	"github.com/tyomhk2015/gocoin/blockchain/blockchain"
 )
 
-func Start() {
+func Start(portNum int) {
+	port = fmt.Sprintf(":%d", portNum)
 	loadTemplates()
 	prepareHandlers()
 	createServer()
 }
 
-const (
-	port             string = ":8888"
-	templateLocation string = "templates/"
-)
+const templateLocation string = "templates/"
 
-var templates *template.Template
+var (
+	port      string
+	templates *template.Template
+)
 
 type homeData struct {
 	PageTitle string
