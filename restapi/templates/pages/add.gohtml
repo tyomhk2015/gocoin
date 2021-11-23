@@ -1,0 +1,23 @@
+{{define "add"}}
+  <!DOCTYPE html>
+  <html lang="en">
+  {{template "head" .PageTitle}}
+  <body>
+    {{template "header" .PageTitle}}
+    <main>
+      <section>
+        {{/* {{
+          Because the form is rendered by '/add',
+          from handlerFunc in main.go, the action can be omitted.
+          As default, it will go to the same page, add.gohtml.
+          }} */}}
+        <form method="POST">
+          <input type="text" placeholder="Data for your block" name="blockData" required />
+          <button>Add Block</button>
+        </form>
+      </section>
+    </main>
+    {{template "footer"}}
+  </body>
+  </html>
+{{end}}

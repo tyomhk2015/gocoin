@@ -11,6 +11,7 @@ import (
 
 func Start(portNum int) {
 	port = fmt.Sprintf(":%d", portNum)
+	handler = http.NewServeMux()
 	loadTemplates()
 	prepareHandlers()
 	createServer()
@@ -21,6 +22,7 @@ const templateLocation string = "templates/"
 var (
 	port      string
 	templates *template.Template
+	handler   *http.ServeMux
 )
 
 type homeData struct {
@@ -29,15 +31,16 @@ type homeData struct {
 }
 
 func createServer() {
+	fmt.Printf("Listening to localhost%s", port)
 	// Make a server with go lang w/ standard library, net/http.
 	// Detect any errors while server is running.
-	log.Fatal(http.ListenAndServe(port, nil))
+	log.Fatal(http.ListenAndServe(port, handler))
 }
 
 func prepareHandlers() {
 	// Add routes
-	http.HandleFunc("/", handleHome)
-	http.HandleFunc("/add", handleAdd)
+	handler.HandleFunc("/", handleHome)
+	handler.HandleFunc("/add", handleAdd)
 }
 
 func handleAdd(rw http.ResponseWriter, r *http.Request) {
