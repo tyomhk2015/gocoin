@@ -27,6 +27,10 @@ Building blockchain and crypto currency with Go lang.
 * Added 'REST client' extension for speeding up REST tests.
 * Mux & NewServeMux
 
+<a href="#user-content-day10">Day 10</a>　2021/11/25
+* Studies some theories about blockchain.
+<a href="https://github.com/tyomhk2015/gocoin/blob/main/terms/terms.md">Notes 📝</a> 
+
 <hr>
 
 #### Resource 📖
@@ -266,3 +270,9 @@ The cause of the issue was that I was registering HandlerFunc()s earlier than cr
 <pre>
 nil.HandleFunc() // X
 </pre>
+
+### **<a href="javascript:void(0);" id="day10">Day 10</a>** ☀️
+2021/11/25
+
+* Studied some blockchain related theories.
+<a href="https://github.com/tyomhk2015/gocoin/blob/main/terms/terms.md">Notes </a>

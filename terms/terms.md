@@ -21,6 +21,13 @@
 - <a href="#user-content-2ndgeneration">The second generation blockchain</a>
 - <a href="#user-content-3rdgeneration">The third generation blockchain</a>
 - <a href="#user-content-3rdgeneration">The scalability trilemma</a>
+- <a href="#user-content-51attack">51% Attack</a>
+- <a href="#user-content-confirmation">Confirmation</a>
+- <a href="#user-content-consensus">Consensus</a>
+- <a href="#user-content-hashrate">Hash rate</a>
+- <a href="#user-content-hardfork">Hard fork</a>
+- <a href="#user-content-proofofstake">Proof of stake</a>
+- <a href="#user-content-dpos">Delegated proof of stake.</a>
 
 <hr>
 
@@ -92,7 +99,10 @@ In order to join a blockchain, your block needs to collect all the data related 
 
 > Proof of work
 
-A system of verifying if a new data (block) is reliable or truthy for joining the chain.<br><br>
+A system of verifying if a new data (block) is reliable or truthy for joining the chain.
+<br>
+In other words, consensus algorithm.
+<br><br>
 `Miner` is related to the 'proof of work'.<br>
 Verifying is done by asking some questions to miners. If miners get correct answers, miners are eligible for appending a new block to the chain.<br>
 The questions are known to all nodes on the blockchain.<br><br>
@@ -244,3 +254,68 @@ E.g: Ethereum 2.0
 <img src="https://i.imgur.com/TAjfVev.png" alt="The scalability trilemma" />
 
 Introduces the three factors that crypto currencies should have.
+
+<br id="51attack">
+
+> 51% Attack
+
+Convincing or taking control of the blockchain network by occupying equal to or more than 51% computing power of the whole blockchain.
+<br>
+It is hardly possible to accomplish such attack because to aquire 51% of the whole blockchain computing power, you need land, equipments, maintenance etc, which the cost will be astronomical.
+<br>
+Not only financial problem, but 'confirmation' and 'consensus' makes 51% attack realistically impossible.
+
+<br id="confirmation">
+
+> Confirmation
+
+After a block is added by a winner computer, the loser computers have to verify if the block is legit.
+
+<br id="consensus">
+
+> Consensus
+
+The process of agreeing on something.
+<br>
+The blockchain is having consensus via confirmation between nodes on the blockchain network.
+
+<br id="hashrate">
+
+> Hash rate
+
+Computing power of computers on the blockchain network.
+<br>
+The speed of finding a new block, or finding correct hash for solving problems to obtain a new block.
+
+<br id="hardforck">
+
+> Hard fork
+
+A mean of ignoring irregualar nodes. This usually happens when miners disagree. Hard fork is also a mean of updating the blockchain.
+
+<br id="proofofstake">
+
+> Proof of stake.
+
+The amounts of reward you will get from the blockchain network will depend on how many coins you hold, period of holding those coins, and commitment on the network.
+<br><br>
+Locking your coins to become a miner or a verifyer is mandatory on the blockchain network that uses PoS.
+It is kind of accountability or insurance of becoming a member of the blockchain network.
+If a member of the network tries to take malicious action, that member will get banned from the network, and the member's coins will be locked forever.
+<br><br>
+PoS is the key feature that secures the 3rd generation crypto currencies, and cosumes much less electricity than PoW.
+<br><br>
+Cons: Riches become richer, poors cannot have a chance to become a member of the network. 
+
+<br id="dpos">
+
+> Delegated proof of stake.
+
+Delegate a trustworthy person for validating blocks on the blockchain network by voting with the coins the voters have.
+<br><br>
+Voters delegate someone to run computers, and when the delegatee gets reward from the network, the reward will be shared with delegators. This is similar to stock option and running a business.
+<br><br>
+If the delegatee is not doing its job, the voters can take their coins back and vote to other candidates who wants to be a delegatee.
+<br><br>
+DPoS or PoS does look like democratic system.
+
