@@ -31,6 +31,16 @@ Building blockchain and crypto currency with Go lang.
 * Studies some theories about blockchain.
 <a href="https://github.com/tyomhk2015/gocoin/blob/main/terms/terms.md">Notes 📝</a> 
 
+<a href="#user-content-day11">Day 11</a>　2021/11/26
+* Continued creating REST API of my blockchain.
+* gorilla/mux
+* Troubleshooting
+* Middleware
+* Adapter
+
+<a href="#user-content-day12">Day 12</a>　2021/11/27
+* CLI
+
 <hr>
 
 #### Resource 📖
@@ -276,3 +286,59 @@ nil.HandleFunc() // X
 
 * Studied some blockchain related theories.
 <a href="https://github.com/tyomhk2015/gocoin/blob/main/terms/terms.md">Notes </a>
+
+### **<a href="javascript:void(0);" id="day11">Day 11</a>** ☀️
+2021/11/26
+
+* Chose <a href="https://github.com/gorilla/mux">Gorilla/mux</a> for managing routes, taking some parameter from ULRs, of this REST API project.
+<br>
+It uses standard library of Go, and I believe it is stable, which means there is likely less chance of maintaining the project in the future. This may save some time.
+
+⚠️ Troubleshooting
+
+Problem:
+<br>
+<a href="https://github.com/gorilla/mux">Gorilla/Mux</a> was properly installed, but VSCode did not import it automatically.
+
+Solution: ✔️
+<br>
+Fixed the issue by changing the value of `GO111MODULE`, using the command, `go env -w GO111MODULE=on`.
+<br>
+
+* While debugging, I had a chance to read <a href="https://maelvls.dev/go111module-everywhere/">an article</a> about 'GO111MODULE', did not read it all yet. However, I believe this may become handy when having trouble with directories.
+
+<br>
+
+💡 Middleware
+* A function that will be called first.
+* A function called before the final destination.
+* A function that is in the middle of ordinary flow.
+* A function that intercepts and modify the data before sending them to the next destination.
+
+<pre>
+// Before proceeding to adding/getting the blocks, w/ the middleware, json will be added to the http-header.
+func jsonContentTypeMiddleware(next http.Handler) http.Handler {
+  return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
+    rw.Header().Add("Content-Type", "application/json")
+    next.ServeHTTP(rw, r)
+  })
+}
+</pre>
+
+💡 Adapter
+* Recieves arguments and create a function that the Handler(return interface) requires.
+* Saves time for not structing and creating type from the very bottom.
+* Just put some ingredients you need to the adapter(type), and the adapter will created the necessary func()s for you.
+<pre>
+func jsonContentTypeMiddleware(next http.Handler) http.Handler {
+  // HandlerFunc is type, the arguments are for constructing the HandlerFunc type.
+  // Inside the HandlerFunc, the necessary items will be created to satisfy conditions for returning 'http.Handler'.
+  return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
+    rw.Header().Add("Content-Type", "application/json")
+    next.ServeHTTP(rw, r)
+  })
+}
+</pre>
+
+### **<a href="javascript:void(0);" id="day12">Day 12</a>** ☀️
+2021/11/27
