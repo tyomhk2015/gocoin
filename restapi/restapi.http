@@ -10,4 +10,18 @@ POST http://localhost:8888/blocks
 }
 
 ###
-GET http://localhost:8888/blocks/3
+POST http://localhost:8888/blocks
+
+{
+  "message": "USADA PEKORA"
+}
+
+###
+POST http://localhost:8888/blocks
+
+{
+  "message": "EMILIA WATSON"
+}
+
+###
+GET http://localhost:8888/blocks/2
