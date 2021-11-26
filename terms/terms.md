@@ -27,7 +27,8 @@
 - <a href="#user-content-hashrate">Hash rate</a>
 - <a href="#user-content-hardfork">Hard fork</a>
 - <a href="#user-content-proofofstake">Proof of stake</a>
-- <a href="#user-content-dpos">Delegated proof of stake.</a>
+- <a href="#user-content-dpos">Delegated proof of stake</a>
+- <a href="#user-content-coin">Coin</a>
 
 <hr>
 
@@ -309,7 +310,7 @@ Cons: Riches become richer, poors cannot have a chance to become a member of the
 
 <br id="dpos">
 
-> Delegated proof of stake.
+> Delegated proof of stake
 
 Delegate a trustworthy person for validating blocks on the blockchain network by voting with the coins the voters have.
 <br><br>
@@ -319,3 +320,10 @@ If the delegatee is not doing its job, the voters can take their coins back and 
 <br><br>
 DPoS or PoS does look like democratic system.
 
+<br id="coin">
+
+> Coin
+
+A good that maintains the blockchain network.
+<br>
+E.g: Verifying, paying gas fee, electric fee, rewarding miners, authenticating miners etc.
