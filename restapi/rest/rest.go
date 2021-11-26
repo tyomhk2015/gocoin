@@ -5,21 +5,27 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 
+	"github.com/gorilla/mux"
 	"github.com/tyomhk2015/gocoin/blockchain/blockchain"
 	"github.com/tyomhk2015/gocoin/utils"
 )
 
 func Start(portNum int) {
 	port = fmt.Sprintf(":%d", portNum)
-	handler = http.NewServeMux()
+	// muxRouter = http.NewServeMux()
+	muxRouter = mux.NewRouter()
+	// middleware
+	muxRouter.Use(jsonContentTypeMiddleware)
+
 	prepareHandlers()
 	createServer()
 }
 
 var (
-	port    string
-	handler *http.ServeMux
+	port      string
+	muxRouter *mux.Router
 )
 
 type url string
@@ -48,12 +54,13 @@ type BlockBody struct {
 
 func createServer() {
 	fmt.Printf("Listening to localhost%s", port)
-	log.Fatal(http.ListenAndServe(port, handler))
+	log.Fatal(http.ListenAndServe(port, muxRouter))
 }
 
 func prepareHandlers() {
-	handler.HandleFunc("/", documentation)
-	handler.HandleFunc("/blocks", blocks)
+	muxRouter.HandleFunc("/", documentation).Methods("GET")               // Mux's feature; pre-defining acceptable methods.
+	muxRouter.HandleFunc("/blocks", blocks).Methods("GET", "POST")        // If requests' methods are not specified by mux's Method(),
+	muxRouter.HandleFunc("/blocks/{height:[0-9]+}", block).Methods("GET") // mux will treat them as exceptions.
 }
 
 func documentation(rw http.ResponseWriter, r *http.Request) {
@@ -65,22 +72,26 @@ func documentation(rw http.ResponseWriter, r *http.Request) {
 		},
 		{
 			URL:         url("/blocks"),
+			Method:      "GET",
+			Description: "Show all blocks.",
+		},
+		{
+			URL:         url("/blocks"),
 			Method:      "POST",
-			Description: "See documentation.",
+			Description: "Add a block",
 			Payload:     "data: string",
 		},
 		{
-			URL:         url("/blocks/{id}"),
+			URL:         url("/blocks/{height}"),
 			Method:      "GET",
-			Description: "See documentation.",
-			Payload:     "data: string",
+			Description: "Show only one block.",
 		},
 	}
 
 	// Change the returned data as JSON, not text/plain.
 	// Some precautions for writing http response writer;
 	// https://ryanc118.medium.com/dont-make-this-mistake-with-go-http-servers-bd313baee41
-	rw.Header().Add("Content-Type", "application/json")
+	// rw.Header().Add("Content-Type", "application/json")
 
 	// Marshal Way
 	// jsonData := convertJSON(data)
@@ -93,12 +104,19 @@ func documentation(rw http.ResponseWriter, r *http.Request) {
 func blocks(rw http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
+		// Why do we need headers?
+		// https://pentest-tools.com/blog/essential-http-security-headers/
+		// https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Evolution_of_HTTP#invention_of_the_world_wide_web
+		// https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview
+		// 1. Tells browsers or servers what kind of data is being transported.
+		// 2. To prevent exploitation that can cause security problems.
+		// rw.Header().Add("Content-Type", "application/json")
+
 		// Convert struct to JSON
-		rw.Header().Add("Content-Type", "application/json")
 		json.NewEncoder(rw).Encode(blockchain.GetBlockchain().ShowAllBlocks())
 	case "POST":
-		// Convert JSON to struct
 		var addedBlockBody BlockBody
+		// Convert JSON to struct
 		err := json.NewDecoder(r.Body).Decode(&addedBlockBody)
 		utils.HandleErr(err)
 		blockchain.GetBlockchain().AddBlock(addedBlockBody.Message)
@@ -107,13 +125,50 @@ func blocks(rw http.ResponseWriter, r *http.Request) {
 	}
 }
 
+type errorResponse struct {
+	ErrorMessage string `json:"errorMessage"`
+}
+
+func block(rw http.ResponseWriter, r *http.Request) {
+	param := mux.Vars(r)
+	height := param["height"]
+	heightInt, _ := strconv.Atoi(height)
+	block, err := blockchain.GetBlockchain().GetBlock(heightInt)
+	jsonEncoder := json.NewEncoder(rw)
+	if err == nil {
+		// Convert go struct to JSON.
+		jsonEncoder.Encode(block)
+	} else {
+		jsonEncoder.Encode(errorResponse{fmt.Sprint(err)})
+	}
+}
+
 func convertJSON(data []URLDescription) []byte {
 	// Marshal: Converting a struct into JSON.
-	// Unmarchal: Converting JSON to a data,
-	// that is comprehensible to desired programming language, Go's struct.
+	// Unmarshal: Converting JSON to a data, that is comprehensible to desired programming language, Go's struct.
 
 	// Marshal way
 	b, err := json.Marshal(data)
 	utils.HandleErr(err)
 	return b
+}
+
+// Middleware:
+// A function that will be called first.
+// A function called before the final destination.
+// A function that is in the middle of ordinary flow.
+// A function that intercepts and modify the data before sending them to the next destination.
+func jsonContentTypeMiddleware(next http.Handler) http.Handler {
+	// HandlerFunc is type, the arguments are for constructing the HandlerFunc type.
+
+	// Apdapter:
+	// Recieves arguments and create a function that the Handler(return interface) requires.
+	// Saves time for not structing and creating type from the very bottom.
+	// Just put some ingredients you need to the adapter(type), and the adapter will
+	// created the necessary func()s for you.
+	// Inside the HandlerFunc, the necessary items will be created to satisfy conditions for returning 'http.Handler'.
+	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
+		rw.Header().Add("Content-Type", "application/json")
+		next.ServeHTTP(rw, r)
+	})
 }
