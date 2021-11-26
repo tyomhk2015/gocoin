@@ -340,5 +340,9 @@ func jsonContentTypeMiddleware(next http.Handler) http.Handler {
 }
 </pre>
 
+* Done with the REST API project. (<a href="https://github.com/tyomhk2015/gocoin/tree/main/restapi">Link</a>)
+![restapi](https://user-images.githubusercontent.com/35278730/143592552-96ebcf3c-d3c3-4857-a4ba-3df29c85864c.gif)
+
+
 ### **<a href="javascript:void(0);" id="day12">Day 12</a>** ☀️
 2021/11/27
