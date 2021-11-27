@@ -382,5 +382,19 @@ go run main.go rest -port=9999
 ![cli](https://user-images.githubusercontent.com/35278730/143676543-b667df15-5e73-4bcd-a369-f51b1ee5d0a0.gif)
 
 
-💡 Persistence / Database
+💡 Persistence / Database: Bolt
 
+* Used <a href="https://github.com/boltdb/bolt">bolt</a> as the database for the blockchain project.
+<br><br>
+Reasons for choosing bolt
+<br>
+① Very easy to use, low learning curve.
+<br>
+② The api is fixed, no furthure changes, and it is stable.
+<br>
+③ The project with using bolt will less likely have issues with database logic after a year or 
+so.
+<br>
+④ Many people are using the bolt.
+<br>
+⑤ Serves my purpose and meets my necessary needs.
