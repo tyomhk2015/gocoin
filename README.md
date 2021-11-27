@@ -16,7 +16,7 @@ Building blockchain and crypto currency with Go lang.
 * My first blockchain. <a href="https://github.com/tyomhk2015/gocoin/tree/main/blockchain">Source Code</a>
 
 <a href="#user-content-day8">Day 8</a>　2021/11/22
-* Created a http server with Go, and a blockchain web application. <a href="https://github.com/tyomhk2015/gocoin/tree/main/goserver">Source Code</a>
+* 🌟 Created a http server with Go, and a blockchain web application. <a href="https://github.com/tyomhk2015/gocoin/tree/main/goserver">Source Code</a>
 
 <a href="#user-content-day9">Day 9</a>　2021/11/23
 * Started creating REST API of my blockchain.
@@ -37,10 +37,14 @@ Building blockchain and crypto currency with Go lang.
 * Troubleshooting
 * Middleware
 * Adapter
-* Done with the REST API project. (<a href="https://github.com/tyomhk2015/gocoin/tree/main/restapi">Link</a>)
+* 🌟 Done with the REST API project. (<a href="https://github.com/tyomhk2015/gocoin/tree/main/restapi">Link</a>)
 
 <a href="#user-content-day12">Day 12</a>　2021/11/27
-* CLI
+* Started building a CLI application.
+* Pros of CLI application: Automate some simple tasks, like downloading, moving files to other directories, deleting files etc, via command line.
+* flag (standard library)
+* 🌟 Done with the CLI application. (<a href="https://github.com/tyomhk2015/gocoin/tree/main/cli">Link</a>)
+* Persistence, a.k.a database.
 
 <hr>
 
@@ -166,7 +170,7 @@ func handleAdd(rw http.ResponseWriter, r *http.Request) {
 }
 </pre>
 
-* Finished creating a web application w/ blockchain feature. <a href="https://github.com/tyomhk2015/gocoin/tree/main/goserver">Source Code</a>
+🌟Finished creating a web application w/ blockchain feature. <a href="https://github.com/tyomhk2015/gocoin/tree/main/goserver">Source Code</a>
 
 ![gocoin](https://user-images.githubusercontent.com/35278730/142892010-5b8b20a4-629f-4969-a683-52648a1a29d2.gif)
 
@@ -341,9 +345,40 @@ func jsonContentTypeMiddleware(next http.Handler) http.Handler {
 }
 </pre>
 
-* Done with the REST API project. (<a href="https://github.com/tyomhk2015/gocoin/tree/main/restapi">Link</a>)
+🌟Done with the REST API project. (<a href="https://github.com/tyomhk2015/gocoin/tree/main/restapi">Link</a>)
 ![restapi](https://user-images.githubusercontent.com/35278730/143592552-96ebcf3c-d3c3-4857-a4ba-3df29c85864c.gif)
 
 
 ### **<a href="javascript:void(0);" id="day12">Day 12</a>** ☀️
 2021/11/27
+
+* Started building a CLI application.
+
+💡 Flag
+* A standard go package that enables to develop CLI application.
+* For building a large CLI application, using <a href="https://github.com/spf13/cobra">Cobra</a> is a good option. <a href="https://github.com/spf13/cobra/blob/master/projects_using_cobra.md">Who uses cobra?</a> 🐍
+
+* I guess this is how homebrew, npm, yarn, or rbenv etc works.
+
+* Specifing array range.
+<pre>
+var arr = [5]int{1, 2, 3, 4, 5}
+fmt.Println(arr[2:])
+
+// Result: [3 4 5]
+// Syntax: arr[beginning index : ending index]
+// If the ending index is unspecified, the ending index wiill be the last index of the array.
+</pre>
+
+* flag.NewFlagSet() : Useful for commands that have a lot of flags.
+* usage: A message that is displayed if some conditions were not met for the command line.
+* When assigning a value to a flag, a whitespace or an equal sign works same.
+<pre>
+go run main.go rest -port 9999
+go run main.go rest -port=9999
+</pre>
+
+🌟Done with the CLI application. (<a href="https://github.com/tyomhk2015/gocoin/tree/main/cli">Link</a>)
+
+💡 Persistence / Database
+
