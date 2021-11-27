@@ -13,6 +13,7 @@ func Start(portNum int) {
 	port = fmt.Sprintf(":%d", portNum)
 	loadTemplates()
 	prepareHandlers()
+	fmt.Println("\nListening to port", portNum)
 	createServer()
 }
 
