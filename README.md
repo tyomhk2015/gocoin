@@ -379,6 +379,8 @@ go run main.go rest -port=9999
 </pre>
 
 🌟Done with the CLI application. (<a href="https://github.com/tyomhk2015/gocoin/tree/main/cli">Link</a>)
+![cli](https://user-images.githubusercontent.com/35278730/143676543-b667df15-5e73-4bcd-a369-f51b1ee5d0a0.gif)
+
 
 💡 Persistence / Database
 
