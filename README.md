@@ -44,6 +44,8 @@ Building blockchain and crypto currency with Go lang.
 * Pros of CLI application: Automate some simple tasks, like downloading, moving files to other directories, deleting files etc, via command line.
 * flag (standard library)
 * 🌟 Done with the CLI application. (<a href="https://github.com/tyomhk2015/gocoin/tree/main/cli">Link</a>)
+
+<a href="#user-content-day13">Day 13</a>　2021/11/28
 * Persistence, a.k.a database.
 
 <hr>
@@ -398,3 +400,8 @@ so.
 ④ Many people are using the bolt.
 <br>
 ⑤ Serves my purpose and meets my necessary needs.
+
+### **<a href="javascript:void(0);" id="day13">Day 13</a>** ☀️
+2021/11/28
+
+* Started adding blocks with the bolt DB.
