@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/tyomhk2015/gocoin/blockchain/blockchain"
+	"github.com/tyomhk2015/gocoin/blockchain_origin/blockchain"
 )
 
 func main() {
