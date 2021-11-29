@@ -1,9 +1,7 @@
 package blockchain
 
 import (
-	"bytes"
 	"crypto/sha256"
-	"encoding/gob"
 	"fmt"
 
 	"github.com/tyomhk2015/gocoin/db"
@@ -36,15 +34,5 @@ func createBlock(data string, previouHash string, height int) *Block {
 
 func (b *Block) persist() {
 	// A function that saves the block in the database
-	db.SaveBlock(b.Hash, b.toBytes())
-}
-
-func (b *Block) toBytes() []byte {
-	// Turn the data of block into bytes.
-	// 'gob' package is used. https://pkg.go.dev/encoding/gob
-	// 'gob' encode/decode bytes.
-	var blockBuffer bytes.Buffer            // Set writer
-	encoder := gob.NewEncoder(&blockBuffer) // Set the encoder with the writer.
-	utils.HandleErr(encoder.Encode(b))      // Encode the block with the encoder and return the bytes to blockBuffer.
-	return blockBuffer.Bytes()
+	db.SaveBlock(b.Hash, utils.ToBytes(b))
 }
