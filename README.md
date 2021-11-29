@@ -49,6 +49,9 @@ Building blockchain and crypto currency with Go lang.
 <a href="#user-content-day13">Day 13</a>　2021/11/28
 * Started adding blocks with the bolt DB.
 
+<a href="#user-content-day14">Day 14</a>　2021/11/29
+* Added <a href="https://github.com/ShoshinNikita/boltBrowser">boltBrowser</a> to look in the the database created by <a href="https://github.com/boltdb/bolt">bolt</a>.
+
 <hr>
 
 #### Resource 📖
@@ -406,3 +409,8 @@ so.
 2021/11/28
 
 * Started adding blocks with the bolt DB.
+
+### **<a href="javascript:void(0);" id="day14">Day 14</a>** ☀️
+2021/11/29
+
+* Added <a href="https://github.com/ShoshinNikita/boltBrowser">boltBrowser</a> to look in the the database created by <a href="https://github.com/boltdb/bolt">bolt</a>.
