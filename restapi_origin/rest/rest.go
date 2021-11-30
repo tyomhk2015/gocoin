@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/gorilla/mux"
-
-	"github.com/tyomhk2015/gocoin/blockchain"
+	"github.com/tyomhk2015/gocoin/blockchain/blockchain"
 	"github.com/tyomhk2015/gocoin/utils"
 )
 
@@ -58,9 +58,9 @@ func createServer() {
 }
 
 func prepareHandlers() {
-	muxRouter.HandleFunc("/", documentation).Methods("GET")                // Mux's feature; pre-defining acceptable methods.
-	muxRouter.HandleFunc("/blocks", blocks).Methods("GET", "POST")         // If requests' methods are not specified by mux's Method(),
-	muxRouter.HandleFunc("/blocks/{hash:[a-f0-9]+}", block).Methods("GET") // Hash will be the URL parameter, the hexdecimal.
+	muxRouter.HandleFunc("/", documentation).Methods("GET")               // Mux's feature; pre-defining acceptable methods.
+	muxRouter.HandleFunc("/blocks", blocks).Methods("GET", "POST")        // If requests' methods are not specified by mux's Method(),
+	muxRouter.HandleFunc("/blocks/{height:[0-9]+}", block).Methods("GET") // mux will treat them as exceptions.
 }
 
 func documentation(rw http.ResponseWriter, r *http.Request) {
@@ -82,7 +82,7 @@ func documentation(rw http.ResponseWriter, r *http.Request) {
 			Payload:     "data: string",
 		},
 		{
-			URL:         url("/blocks/{hash}"),
+			URL:         url("/blocks/{height}"),
 			Method:      "GET",
 			Description: "Show only one block.",
 		},
@@ -113,17 +113,15 @@ func blocks(rw http.ResponseWriter, r *http.Request) {
 		// rw.Header().Add("Content-Type", "application/json")
 
 		// Convert struct to JSON
-		return
-		// json.NewEncoder(rw).Encode(blockchain.GetBlockchain().ShowAllBlocks())
+		json.NewEncoder(rw).Encode(blockchain.GetBlockchain().ShowAllBlocks())
 	case "POST":
-		return
-		// var addedBlockBody BlockBody
-		// // Convert JSON to struct
-		// err := json.NewDecoder(r.Body).Decode(&addedBlockBody)
-		// utils.HandleErr(err)
-		// blockchain.GetBlockchain().AddBlock(addedBlockBody.Message)
-		// fmt.Println(addedBlockBody)
-		// rw.WriteHeader(http.StatusCreated)
+		var addedBlockBody BlockBody
+		// Convert JSON to struct
+		err := json.NewDecoder(r.Body).Decode(&addedBlockBody)
+		utils.HandleErr(err)
+		blockchain.GetBlockchain().AddBlock(addedBlockBody.Message)
+		fmt.Println(addedBlockBody)
+		rw.WriteHeader(http.StatusCreated)
 	}
 }
 
@@ -133,8 +131,9 @@ type errorResponse struct {
 
 func block(rw http.ResponseWriter, r *http.Request) {
 	param := mux.Vars(r)
-	hash := param["hash"]
-	block, err := blockchain.FindBlock(hash)
+	height := param["height"]
+	heightInt, _ := strconv.Atoi(height)
+	block, err := blockchain.GetBlockchain().GetBlock(heightInt)
 	jsonEncoder := json.NewEncoder(rw)
 	if err == nil {
 		// Convert go struct to JSON.

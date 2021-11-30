@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"text/template"
 
-	"github.com/tyomhk2015/gocoin/blockchain"
+	"github.com/tyomhk2015/gocoin/blockchain/blockchain"
 )
 
 func Start(portNum int) {
@@ -49,14 +49,14 @@ func handleAdd(rw http.ResponseWriter, r *http.Request) {
 	case "POST":
 		r.ParseForm()
 		data := r.Form.Get("blockData")
-		blockchain.Blockchain().AddBlock(data)
+		blockchain.GetBlockchain().AddBlock(data)
 		http.Redirect(rw, r, "/", http.StatusMovedPermanently)
 	}
 }
 
 func handleHome(rw http.ResponseWriter, r *http.Request) {
 	// http.ResponseWriter: The writer of data to send to the users.
-	data := homeData{"This is running on the Go server.", nil}
+	data := homeData{"This is running on the Go server.", blockchain.GetBlockchain().ShowAllBlocks()}
 	templates.ExecuteTemplate(rw, "home", data)
 }
 

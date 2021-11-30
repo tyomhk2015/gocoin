@@ -22,3 +22,12 @@ func ToBytes(i interface{}) []byte {
 	HandleErr(encoder.Encode(i))          // Encode the block with the encoder and return the bytes to blockBuffer.
 	return anyBuffer.Bytes()
 }
+
+// Find data that matches the 'Hash'(arg: data).
+// Decode the returned data and put it in the given interface, a Block(struct) or Blockchain(struct).
+func FromBytes(i interface{}, data []byte) {
+	// The decoder, with a target to decode, initiates decoding
+	// and stores the decoded data to 'i'.
+	decoder := gob.NewDecoder(bytes.NewReader(data))
+	HandleErr(decoder.Decode(i))
+}

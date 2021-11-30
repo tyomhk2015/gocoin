@@ -1,0 +1,27 @@
+http://localhost:8888/
+###
+http://localhost:8888/blocks
+
+###
+POST http://localhost:8888/blocks
+
+{
+  "message": "TOKINO SORA"
+}
+
+###
+POST http://localhost:8888/blocks
+
+{
+  "message": "USADA PEKORA"
+}
+
+###
+POST http://localhost:8888/blocks
+
+{
+  "message": "EMILIA WATSON"
+}
+
+###
+GET http://localhost:8888/blocks/2

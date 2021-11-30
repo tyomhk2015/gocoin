@@ -52,6 +52,9 @@ Building blockchain and crypto currency with Go lang.
 <a href="#user-content-day14">Day 14</a>　2021/11/29
 * Added <a href="https://github.com/ShoshinNikita/boltBrowser">boltBrowser</a> to look in the the database created by <a href="https://github.com/boltdb/bolt">bolt</a>.
 
+<a href="#user-content-day15">Day 15</a>　2021/11/30
+* Implemented a feature of retrieving the a block from bolt DB using the block's hash.
+
 <hr>
 
 #### Resource 📖
@@ -414,3 +417,8 @@ so.
 2021/11/29
 
 * Added <a href="https://github.com/ShoshinNikita/boltBrowser">boltBrowser</a> to look in the the database created by <a href="https://github.com/boltdb/bolt">bolt</a>.
+
+### **<a href="javascript:void(0);" id="day15">Day 15</a>** ☀️
+2021/11/30
+
+* Implemented a feature of retrieving the a block from bolt DB using the block's hash.
