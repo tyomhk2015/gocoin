@@ -14,6 +14,7 @@ const (
 	dbName       = "blockchain.db"
 	dataBucket   = "data"
 	blocksBucket = "blocks"
+	checkPoint   = "checkPoint"
 )
 
 // Initialize a database.
@@ -45,10 +46,10 @@ func DB() *bolt.DB {
 // hash: key
 // data: value
 func SaveBlock(hash string, data []byte) {
-	fmt.Printf("Saving Block %s\nData: %x\n", hash, data)
+	// fmt.Printf("Saving Block %s\nData: %x\n", hash, data)
 	err := DB().Update(func(t *bolt.Tx) error {
 		bucket := t.Bucket([]byte(blocksBucket))
-		fmt.Println("key:", []byte(hash), "\n\ndata:", data)
+		// fmt.Println("key:", []byte(hash), "\n\ndata:", data)
 		err := bucket.Put([]byte(hash), data)
 		return err
 	})
@@ -59,8 +60,36 @@ func SaveBlock(hash string, data []byte) {
 func SaveBlockchain(data []byte) {
 	err := DB().Update(func(t *bolt.Tx) error {
 		bucket := t.Bucket([]byte(dataBucket))
-		err := bucket.Put([]byte("checkpoint"), data)
+		err := bucket.Put([]byte(checkPoint), data)
 		return err
 	})
 	utils.HandleErr(err)
+}
+
+// Retrieve blockchain data from DB
+func CheckPoint() []byte {
+	var data []byte
+	DB().View(func(t *bolt.Tx) error {
+		bucket := t.Bucket([]byte(dataBucket))
+		data = bucket.Get([]byte(checkPoint))
+		fmt.Printf("CHeckout: %x\n", data)
+		return nil
+	})
+	return data
+}
+
+// Find hash keys for a specific block from the bolt DB bucket.
+func Block(hash string) []byte {
+	var data []byte
+	DB().View(func(t *bolt.Tx) error {
+		bucket := t.Bucket([]byte(blocksBucket))
+		data = bucket.Get([]byte(hash))
+		return nil
+	})
+	return data
+}
+
+// To prevent data corruption, close the opened stream of the bolt database.
+func Close() {
+	DB().Close()
 }
