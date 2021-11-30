@@ -2,6 +2,7 @@ package blockchain
 
 import (
 	"crypto/sha256"
+	"errors"
 	"fmt"
 
 	"github.com/tyomhk2015/gocoin/db"
@@ -35,4 +36,21 @@ func createBlock(data string, previouHash string, height int) *Block {
 func (b *Block) persist() {
 	// A function that saves the block in the database
 	db.SaveBlock(b.Hash, utils.ToBytes(b))
+}
+
+var BlockNotFoundErr = errors.New("The block you are looking for is not found.")
+
+// FindBlock :Find one specific block.
+func FindBlock(hash string) (*Block, error) {
+	blockBytes := db.Block(hash)
+	if blockBytes == nil {
+		return nil, BlockNotFoundErr
+	}
+	block := &Block{}
+	block.restore(blockBytes) // Load a block using blockByte(Hash).
+	return block, nil
+}
+
+func (b *Block) restore(data []byte) {
+	utils.FromBytes(b, data)
 }

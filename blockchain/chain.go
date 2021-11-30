@@ -1,6 +1,7 @@
 package blockchain
 
 import (
+	"fmt"
 	"sync"
 
 	"github.com/tyomhk2015/gocoin/db"
@@ -30,13 +31,22 @@ func Blockchain() *blockchain {
 			//    : or the user is using the blockchain for the first time.
 			b = &blockchain{"", 0}
 
-			// TODO: Search for the checkpoint on the database.
-
-			// TODO: If there is checkpoint, then restore the previous blockchain from bytes, stored in the DB.
-
-			b.AddBlock("YAGOO")
+			// Search for the checkpoint on the database,
+			// meaning this checks if previous blockchain is in the DB.
+			checkPoint := db.CheckPoint()
+			fmt.Printf("\nBEFORE\nNewHash: %x\nHeight: %d\nCheckpoint: %x", b.NewestHash, b.Height, checkPoint)
+			if checkPoint == nil {
+				// If there is no exisiting blockchain, create a new one.
+				b.AddBlock("YAGOO")
+			} else {
+				// If there is checkpoint, then restore the previous blockchain from bytes, stored in the DB.
+				fmt.Println("\n\n**RESTORING THE BLOCKCHAIN FROM DB.**")
+				b.restoreBlockChain(checkPoint)
+			}
 		})
+		fmt.Printf("\nAFTER\nNewHash: %x\nHeight: %d\n", b.NewestHash, b.Height)
 	}
+	fmt.Println(b.NewestHash)
 	return b
 }
 
@@ -47,8 +57,21 @@ func (b *blockchain) AddBlock(data string) {
 	// Renew the chain data.
 	b.NewestHash = block.Hash
 	b.Height = block.Height
+	b.persist()
 }
 
+// Save the blockchain in bytes.
 func (b *blockchain) persist() {
 	db.SaveBlockchain(utils.ToBytes(b))
+}
+
+// Convert the blockchain from bytes to go lang, the data conversion.
+// Read from database and change the pointer of the 'b' to the read blockchain data.
+func (b *blockchain) restoreBlockChain(data []byte) {
+	// Set a decoder with a target to decode.
+	// decoder := gob.NewDecoder(bytes.NewReader(data))
+	// Replace the memory address of 'b', with the memory address of loaded blockchain.
+	// err := decoder.Decode(b)
+	// utils.HandleErr(err)
+	utils.FromBytes(b, data)
 }
