@@ -1,15 +1,16 @@
-package main
+package cli
 
 import (
 	"flag"
 	"fmt"
 	"os"
+	"runtime"
 
 	"github.com/tyomhk2015/gocoin/goserver/explorer"
 	"github.com/tyomhk2015/gocoin/restapi/rest"
 )
 
-func main() {
+func Start() {
 	if !checkLength() {
 		// Show introduction when there are no command line arguments.
 		introduce()
@@ -39,7 +40,7 @@ func introduce() {
 	welcome := "Welcome to gocoin CLI program. 💻\nSelect desired program to initiate."
 	programs := "\n\n👉 -mode=rest: Choose between 'html', 'rest', and 'both'.\n👉 -port=8888: Set port number of the server.\n"
 	fmt.Println(welcome, programs)
-	os.Exit(0)
+	runtime.Goexit() // Runs all the 'defer'red functions and terminate the program.
 }
 
 func checkLength() bool {
