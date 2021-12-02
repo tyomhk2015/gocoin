@@ -57,7 +57,7 @@ Building blockchain and crypto currency with Go lang.
 
 <a href="#user-content-day16">Day 16</a>　2021/12/2
 * Implemented a feature of retrieving the all blocks from bolt DB using the recent block's hash.
-* Creating a blockchain with DB is done.
+* 🌟 Creating a blockchain with DB is done.
 * Started creating mining or proof of work, PoW.
 
 <hr>
@@ -432,5 +432,6 @@ so.
 2021/12/2
 
 * Implemented a feature of retrieving the all blocks from bolt DB using the recent block's hash.
-* Creating a blockchain with DB is done.
+*🌟 Creating a blockchain with DB is done.
+![dbchain](https://user-images.githubusercontent.com/35278730/144434854-6b8c5bbb-2ccb-49ed-8aeb-ab8bc7bcc5a3.gif)
 * Started creating mining or proof of work, PoW.
