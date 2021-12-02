@@ -102,7 +102,7 @@ In order to join a blockchain, your block needs to collect all the data related 
 
 A system of verifying if a new data (block) is reliable or truthy for joining the chain.
 <br>
-In other words, consensus algorithm.
+In other words, consensus algorithm, or making adding a block to the chain more harder and difficult to lie to other nodes (miners, computers etc).
 <br><br>
 `Miner` is related to the 'proof of work'.<br>
 Verifying is done by asking some questions to miners. If miners get correct answers, miners are eligible for appending a new block to the chain.<br>

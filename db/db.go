@@ -57,7 +57,7 @@ func SaveBlock(hash string, data []byte) {
 }
 
 // Save the trace of the block in the chain and the database.
-func SaveBlockchain(data []byte) {
+func SaveCheckPoint(data []byte) {
 	err := DB().Update(func(t *bolt.Tx) error {
 		bucket := t.Bucket([]byte(dataBucket))
 		err := bucket.Put([]byte(checkPoint), data)
