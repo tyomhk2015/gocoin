@@ -24,4 +24,12 @@ POST http://localhost:8888/blocks
 }
 
 ###
-GET http://localhost:8888/blocks/2
+POST http://localhost:8888/blocks
+
+{
+  "message": "HOSIKAWA"
+}
+
+
+###
+GET http://localhost:8888/blocks/26f39cc4cbf0c3bbb454be6400f4501454433a1f3c3ca39d50195ce0
