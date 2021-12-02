@@ -113,17 +113,15 @@ func blocks(rw http.ResponseWriter, r *http.Request) {
 		// rw.Header().Add("Content-Type", "application/json")
 
 		// Convert struct to JSON
-		return
-		// json.NewEncoder(rw).Encode(blockchain.GetBlockchain().ShowAllBlocks())
+		json.NewEncoder(rw).Encode(blockchain.Blockchain().Blocks())
 	case "POST":
-		return
-		// var addedBlockBody BlockBody
-		// // Convert JSON to struct
-		// err := json.NewDecoder(r.Body).Decode(&addedBlockBody)
-		// utils.HandleErr(err)
-		// blockchain.GetBlockchain().AddBlock(addedBlockBody.Message)
-		// fmt.Println(addedBlockBody)
-		// rw.WriteHeader(http.StatusCreated)
+		var addedBlockBody BlockBody
+		// Convert JSON to struct
+		err := json.NewDecoder(r.Body).Decode(&addedBlockBody)
+		utils.HandleErr(err)
+		blockchain.Blockchain().AddBlock(addedBlockBody.Message)
+		fmt.Println(addedBlockBody)
+		rw.WriteHeader(http.StatusCreated)
 	}
 }
 

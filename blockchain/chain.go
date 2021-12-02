@@ -62,7 +62,7 @@ func (b *blockchain) AddBlock(data string) {
 
 // Save the blockchain in bytes.
 func (b *blockchain) persist() {
-	db.SaveBlockchain(utils.ToBytes(b))
+	db.SaveCheckPoint(utils.ToBytes(b))
 }
 
 // Convert the blockchain from bytes to go lang, the data conversion.
@@ -74,4 +74,22 @@ func (b *blockchain) restoreBlockChain(data []byte) {
 	// err := decoder.Decode(b)
 	// utils.HandleErr(err)
 	utils.FromBytes(b, data)
+}
+
+// Get all the blocks by using the recent block's previous hash
+// and iterate the process until there are no more blocks left.
+// Traverse from recent block to the first block on the blockchain.
+func (b *blockchain) Blocks() []*Block {
+	var retrievedBlocks []*Block // A temporary storage for collecting retrieved blocks.
+	hashCursor := b.NewestHash
+	for {
+		retrievedBlock, _ := FindBlock(hashCursor)
+		retrievedBlocks = append(retrievedBlocks, retrievedBlock)
+		if retrievedBlock.PreviousHash != "" || len(retrievedBlock.PreviousHash) != 0 {
+			hashCursor = retrievedBlock.PreviousHash
+		} else {
+			break // Without 'break' the for loop will continue forever.
+		}
+	}
+	return retrievedBlocks
 }
