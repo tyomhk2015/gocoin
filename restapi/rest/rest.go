@@ -61,6 +61,7 @@ func prepareHandlers() {
 	muxRouter.HandleFunc("/", documentation).Methods("GET")                // Mux's feature; pre-defining acceptable methods.
 	muxRouter.HandleFunc("/blocks", blocks).Methods("GET", "POST")         // If requests' methods are not specified by mux's Method(),
 	muxRouter.HandleFunc("/blocks/{hash:[a-f0-9]+}", block).Methods("GET") // Hash will be the URL parameter, the hexdecimal.
+	muxRouter.HandleFunc("/status", status).Methods("GET")
 }
 
 func documentation(rw http.ResponseWriter, r *http.Request) {
@@ -69,6 +70,11 @@ func documentation(rw http.ResponseWriter, r *http.Request) {
 			URL:         url("/"),
 			Method:      "GET",
 			Description: "See documentation.",
+		},
+		{
+			URL:         url("/status"),
+			Method:      "GET",
+			Description: "See the status of the blockchain.",
 		},
 		{
 			URL:         url("/blocks"),
@@ -170,4 +176,8 @@ func jsonContentTypeMiddleware(next http.Handler) http.Handler {
 		rw.Header().Add("Content-Type", "application/json")
 		next.ServeHTTP(rw, r)
 	})
+}
+func status(rw http.ResponseWriter, r *http.Request) {
+	// Show the status of the blockchain.
+	json.NewEncoder(rw).Encode(blockchain.Blockchain())
 }
