@@ -29,6 +29,10 @@
 - <a href="#user-content-proofofstake">Proof of stake</a>
 - <a href="#user-content-dpos">Delegated proof of stake</a>
 - <a href="#user-content-coin">Coin</a>
+- <a href="#user-content-transaction">Transaction</a>
+- <a href="#user-content-input">Input</a>
+- <a href="#user-content-output">Output</a>
+- <a href="#user-content-coinbase">Coinbase</a>
 
 <hr>
 
@@ -327,3 +331,27 @@ DPoS or PoS does look like democratic system.
 A good that maintains the blockchain network.
 <br>
 E.g: Verifying, paying gas fee, electric fee, rewarding miners, authenticating miners etc.
+
+<br id="transaction">
+
+> Transaction
+
+sss
+
+<br id="input">
+
+> Input
+
+sss
+
+<br id="output">
+
+> Output
+
+sss
+
+<br id="coinbase">
+
+> Coinbase
+
+sss
