@@ -446,5 +446,5 @@ so.
 
 * Implemented dynamic difficulty for adding blocks to the blockchain.
 * 🌟 Finished implementing PoW/Mining.
-
+![difficulty4](https://user-images.githubusercontent.com/35278730/144707485-3878ead3-b5c6-4308-8e7c-cb793b32056e.gif)
 
