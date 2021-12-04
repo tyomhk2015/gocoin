@@ -12,6 +12,7 @@ type blockchain struct {
 	// PoV: When the first user uses the blockchain for the first time.
 	NewestHash string `json:"newestHash"`
 	Height     int    `json:"height"`
+	Difficulty int    `json:"difficulty"`
 }
 
 // Can be used for only in the 'blockchain' package.
@@ -29,12 +30,12 @@ func Blockchain() *blockchain {
 			// this has been called several times by goroutine.
 			// PoV: When the blockchain is created for the first time,
 			//    : or the user is using the blockchain for the first time.
-			b = &blockchain{"", 0}
+			b = &blockchain{Height: 0}
 
 			// Search for the checkpoint on the database,
 			// meaning this checks if previous blockchain is in the DB.
 			checkPoint := db.CheckPoint()
-			fmt.Printf("\nBEFORE\nNewHash: %x\nHeight: %d\nCheckpoint: %x", b.NewestHash, b.Height, checkPoint)
+			// fmt.Printf("\nBEFORE\nNewHash: %x\nHeight: %d\nCheckpoint: %x", b.NewestHash, b.Height, checkPoint)
 			if checkPoint == nil {
 				// If there is no exisiting blockchain, create a new one.
 				b.AddBlock("YAGOO")
@@ -44,9 +45,9 @@ func Blockchain() *blockchain {
 				b.restoreBlockChain(checkPoint)
 			}
 		})
-		fmt.Printf("\nAFTER\nNewHash: %x\nHeight: %d\n", b.NewestHash, b.Height)
+		// fmt.Printf("\nAFTER\nNewHash: %x\nHeight: %d\n", b.NewestHash, b.Height)
 	}
-	fmt.Println(b.NewestHash)
+	// fmt.Println(b.NewestHash)
 	return b
 }
 
@@ -57,6 +58,7 @@ func (b *blockchain) AddBlock(data string) {
 	// Renew the chain data.
 	b.NewestHash = block.Hash
 	b.Height = block.Height
+	b.Difficulty = block.Difficulty
 	b.persist()
 }
 
@@ -93,3 +95,39 @@ func (b *blockchain) Blocks() []*Block {
 	}
 	return retrievedBlocks
 }
+
+// PoW, setting difficulty.
+const (
+	defaultDifficulty  int = 2
+	difficultyInterval int = 5 // Checkpoint of deciding wether the difficulty should be harder/easier/ stay the same.
+	intervalPerBlock   int = 1 // The unit is in minutes.
+	timeFlexibility    int = 2
+)
+
+func (b *blockchain) SetDifficulty() int {
+	if b.Height == 0 {
+		// Set difficulty to 2, when the blockchain is newly created.
+		return defaultDifficulty
+	} else if b.Height%difficultyInterval == 0 {
+		// Renew the difficulty.
+		return b.renewDifficulty()
+	}
+	return b.Difficulty
+}
+
+func (b *blockchain) renewDifficulty() int {
+	allBlocks := b.Blocks()
+	newestBlock := allBlocks[0] // The blocks are in descending order, the newest one is at the start.
+	lastDifficultyBlock := allBlocks[difficultyInterval-1]
+	elapsedTime := (newestBlock.TimeStamp - lastDifficultyBlock.TimeStamp) / 60 // Calculate in minutes.
+	expectedTime := difficultyInterval * intervalPerBlock
+
+	if elapsedTime <= (expectedTime - timeFlexibility) {
+		return b.Difficulty + 1
+	} else if elapsedTime >= (expectedTime + timeFlexibility) {
+		return b.Difficulty - 1
+	}
+	return b.Difficulty
+}
+
+// /PoW, setting difficulty.

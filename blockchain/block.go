@@ -1,9 +1,10 @@
 package blockchain
 
 import (
-	"crypto/sha256"
 	"errors"
 	"fmt"
+	"strings"
+	"time"
 
 	"github.com/tyomhk2015/gocoin/db"
 	"github.com/tyomhk2015/gocoin/utils"
@@ -14,6 +15,9 @@ type Block struct {
 	Hash         string `json:"hash"`
 	PreviousHash string `json:"previoushash,omitempty"`
 	Height       int    `json:"height"`
+	Difficulty   int    `json:"difficulty"`
+	Nonce        int    `json:"nonce"`
+	TimeStamp    int    `json:"timestamp"` // The time when the block is created.
 }
 
 func createBlock(data string, previouHash string, height int) *Block {
@@ -22,16 +26,30 @@ func createBlock(data string, previouHash string, height int) *Block {
 		Hash:         "",
 		PreviousHash: previouHash,
 		Height:       height,
+		Difficulty:   Blockchain().SetDifficulty(),
+		Nonce:        0,
 	}
-	// Save the following data in the database
-	// Ingredients for hashes.
-	payload := block.Data + block.PreviousHash + fmt.Sprint(block.Height)
-	// Hash with the given data.
-	block.Hash = fmt.Sprintf("%x", sha256.Sum224([]byte(payload)))
-	// Until here
+	block.mine()
 	block.persist()
 	return &block
 }
+
+// PoW and verification.
+func (b *Block) mine() {
+	target := strings.Repeat("0", b.Difficulty)
+	for {
+		b.TimeStamp = int(time.Now().Unix()) // Save the time when the block is created.
+		hash := utils.Hash(b)
+		fmt.Printf("\n\n\nCurrent Hash: %s\nTarget(Difficulty): %s\nNonce: %d\n\n\n", hash, target, b.Nonce)
+		if strings.HasPrefix(hash, target) {
+			b.Hash = hash
+			break
+		}
+		b.Nonce++
+	}
+}
+
+// /PoW and verification.
 
 func (b *Block) persist() {
 	// A function that saves the block in the database

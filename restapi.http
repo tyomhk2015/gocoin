@@ -1,8 +1,12 @@
 http://localhost:8888/
-###
+
+### View tje status of the blockchain
+http://localhost:8888/status
+
+### View all the blocks on the blockchain
 http://localhost:8888/blocks
 
-###
+### Add a block
 POST http://localhost:8888/blocks
 
 {
@@ -27,9 +31,30 @@ POST http://localhost:8888/blocks
 POST http://localhost:8888/blocks
 
 {
-  "message": "HOSIKAWA"
+  "message": "HOSIKAWA SARA"
+}
+
+###
+POST http://localhost:8888/blocks
+
+{
+  "message": "SAKURA MIKO"
+}
+
+###
+POST http://localhost:8888/blocks
+
+{
+  "message": "SHIROGANE NOEL"
+}
+
+###
+POST http://localhost:8888/blocks
+
+{
+  "message": "GUNDO MIREI"
 }
 
 
-###
-GET http://localhost:8888/blocks/26f39cc4cbf0c3bbb454be6400f4501454433a1f3c3ca39d50195ce0
+### See one specific block.
+GET http://localhost:8888/blocks/000a45c0cf1ebb68d2f84e2874440063fd7fca4bdaab006c52ade91775a84561
