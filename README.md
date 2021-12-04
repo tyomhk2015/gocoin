@@ -63,6 +63,7 @@ Building blockchain and crypto currency with Go lang.
 <a href="#user-content-day17">Day 17</a>　2021/12/4
 * Implemented dynamic difficulty for adding blocks to the blockchain.
 * 🌟 Finished implementing PoW/Mining.
+* Started implementing 'transactions'.
 
 <hr>
 
@@ -445,6 +446,12 @@ so.
 2021/12/4
 
 * Implemented dynamic difficulty for adding blocks to the blockchain.
+<pre>
+The difficulty of Bitcoin changes every once when 2016 blocks are added to the blockchain.
+
+Source: https://www.coindesk.com/markets/2021/07/19/bitcoin-network-sees-fourth-straight-downward-difficulty-adjustment/
+</pre>
 * 🌟 Finished implementing PoW/Mining.
 ![difficulty4](https://user-images.githubusercontent.com/35278730/144707485-3878ead3-b5c6-4308-8e7c-cb793b32056e.gif)
 
+* Started implementing 'transactions'.
