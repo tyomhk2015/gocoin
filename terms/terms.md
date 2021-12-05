@@ -336,22 +336,26 @@ E.g: Verifying, paying gas fee, electric fee, rewarding miners, authenticating m
 
 > Transaction
 
-sss
+Trade of coins between buyer and seller.
 
 <br id="input">
 
 > Input
 
-sss
+Status about the amount of coins and wallet address `BEFORE` a transaction occurs.
+<br>
+The information about which wallet is giving out coins.
 
 <br id="output">
 
 > Output
 
-sss
+Status aboutthe  amount of coins and wallet address `AFTER` a transaction occurs.
+<br>
+The information about which wallet is receiving coins.
 
 <br id="coinbase">
 
 > Coinbase
 
-sss
+An activity that depends on coins, the crpto currencies.
