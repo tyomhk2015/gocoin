@@ -44,14 +44,6 @@ type URLDescription struct {
 	Payload     string `json:"payload,omitempty"`
 }
 
-// A struct for recieving and converting JSON from a request.
-type BlockBody struct {
-	// Must match the JSON key name with struct field name.
-	// Otherwise an empty string will be returned.
-	Message string
-	// Signal  string
-}
-
 func createServer() {
 	fmt.Printf("Listening to localhost%s", port)
 	log.Fatal(http.ListenAndServe(port, muxRouter))
@@ -62,6 +54,7 @@ func prepareHandlers() {
 	muxRouter.HandleFunc("/blocks", blocks).Methods("GET", "POST")         // If requests' methods are not specified by mux's Method(),
 	muxRouter.HandleFunc("/blocks/{hash:[a-f0-9]+}", block).Methods("GET") // Hash will be the URL parameter, the hexdecimal.
 	muxRouter.HandleFunc("/status", status).Methods("GET")
+	muxRouter.HandleFunc("/balance/{address}", balance).Methods("GET") // Show all transaction outputs of a specific address.
 }
 
 func documentation(rw http.ResponseWriter, r *http.Request) {
@@ -92,6 +85,11 @@ func documentation(rw http.ResponseWriter, r *http.Request) {
 			Method:      "GET",
 			Description: "Show only one block.",
 		},
+		{
+			URL:         url("/balance/{address}"),
+			Method:      "GET",
+			Description: "Show transaction outputs for an address.",
+		},
 	}
 
 	// Change the returned data as JSON, not text/plain.
@@ -110,23 +108,9 @@ func documentation(rw http.ResponseWriter, r *http.Request) {
 func blocks(rw http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
-		// Why do we need headers?
-		// https://pentest-tools.com/blog/essential-http-security-headers/
-		// https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Evolution_of_HTTP#invention_of_the_world_wide_web
-		// https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview
-		// 1. Tells browsers or servers what kind of data is being transported.
-		// 2. To prevent exploitation that can cause security problems.
-		// rw.Header().Add("Content-Type", "application/json")
-
-		// Convert struct to JSON
 		json.NewEncoder(rw).Encode(blockchain.Blockchain().Blocks())
 	case "POST":
-		var addedBlockBody BlockBody
-		// Convert JSON to struct
-		err := json.NewDecoder(r.Body).Decode(&addedBlockBody)
-		utils.HandleErr(err)
-		blockchain.Blockchain().AddBlock(addedBlockBody.Message)
-		fmt.Println(addedBlockBody)
+		blockchain.Blockchain().AddBlock()
 		rw.WriteHeader(http.StatusCreated)
 	}
 }
@@ -180,4 +164,22 @@ func jsonContentTypeMiddleware(next http.Handler) http.Handler {
 func status(rw http.ResponseWriter, r *http.Request) {
 	// Show the status of the blockchain.
 	json.NewEncoder(rw).Encode(blockchain.Blockchain())
+}
+
+// Show all transaction outputs of a specific address.
+func balance(rw http.ResponseWriter, r *http.Request) {
+	address := mux.Vars(r)["address"]
+	totalFlag := r.URL.Query().Get("total")
+	switch totalFlag {
+	case "true":
+		balance := blockchain.Blockchain().BalanceByAddress(address)
+		utils.HandleErr(json.NewEncoder(rw).Encode(balanceResponse{address, balance}))
+	default:
+		utils.HandleErr(json.NewEncoder(rw).Encode(blockchain.Blockchain().TxOutsByAddress(address)))
+	}
+}
+
+type balanceResponse struct {
+	Address string `json:"address"`
+	Balance int    `json:"balance"`
 }
