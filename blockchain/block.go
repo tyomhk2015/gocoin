@@ -11,23 +11,23 @@ import (
 )
 
 type Block struct {
-	Data         string `json:"data"`
 	Hash         string `json:"hash"`
 	PreviousHash string `json:"previoushash,omitempty"`
 	Height       int    `json:"height"`
 	Difficulty   int    `json:"difficulty"`
 	Nonce        int    `json:"nonce"`
 	TimeStamp    int    `json:"timestamp"` // The time when the block is created.
+	Transactions []*Tx  `json:"transactions"`
 }
 
-func createBlock(data string, previouHash string, height int) *Block {
+func createBlock(previouHash string, height int) *Block {
 	block := Block{
-		Data:         data,
 		Hash:         "",
 		PreviousHash: previouHash,
 		Height:       height,
 		Difficulty:   Blockchain().SetDifficulty(),
 		Nonce:        0,
+		Transactions: []*Tx{makeCoinbaseTx("HOLOLIVE")},
 	}
 	block.mine()
 	block.persist()
