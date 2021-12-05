@@ -1,6 +1,6 @@
 http://localhost:8888/
 
-### View tje status of the blockchain
+### View the status of the blockchain
 http://localhost:8888/status
 
 ### View all the blocks on the blockchain

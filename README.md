@@ -65,6 +65,10 @@ Building blockchain and crypto currency with Go lang.
 * 🌟 Finished implementing PoW/Mining.
 * Started implementing 'transactions'.
 
+<a href="#user-content-day18">Day 18</a>　2021/12/5
+* Continued implementing coinbase transactions.
+* Troubleshooting
+
 <hr>
 
 #### Resource 📖
@@ -455,3 +459,31 @@ Source: https://www.coindesk.com/markets/2021/07/19/bitcoin-network-sees-fourth-
 ![difficulty4](https://user-images.githubusercontent.com/35278730/144707485-3878ead3-b5c6-4308-8e7c-cb793b32056e.gif)
 
 * Started implementing 'transactions'.
+
+### **<a href="javascript:void(0);" id="day18">Day 18</a>** ☀️
+2021/12/5
+
+* Continued implementing coinbase transactions.
+* Updated more terms related to blockchain.
+
+⚠️ Troubleshooting
+
+Problem:
+<br>
+In the `rest.go`, postpended query, `?total=true`, to `/balance/{address}` handlerFunc(). However, could not desired result and got 404 responses.
+<pre>
+// rest.go
+  muxRouter.HandleFunc("/balance/{address}?total=true", balance).Methods("GET")
+</pre>
+
+Solution: ✔️
+<br>
+Fixed the issue by erasing the postpended query. It looks like `http.Request` handles the queries.
+<pre>
+// rest.go
+...
+  muxRouter.HandleFunc("/balance/{address}, balance).Methods("GET")
+...
+  totalFlag := r.URL.Query().Get("total")
+...
+</pre>

@@ -33,6 +33,9 @@
 - <a href="#user-content-input">Input</a>
 - <a href="#user-content-output">Output</a>
 - <a href="#user-content-coinbase">Coinbase</a>
+- <a href="#user-content-mempool">Mempool</a>
+- <a href="#user-content-confirmed">Confirmed</a>
+- <a href="#user-content-txfees">Transaction Fees</a>
 
 <hr>
 
@@ -292,7 +295,7 @@ Computing power of computers on the blockchain network.
 <br>
 The speed of finding a new block, or finding correct hash for solving problems to obtain a new block.
 
-<br id="hardforck">
+<br id="hardfork">
 
 > Hard fork
 
@@ -359,3 +362,31 @@ The information about which wallet is receiving coins.
 > Coinbase
 
 An activity that depends on coins, the crpto currencies.
+
+<br id="mempool">
+
+> Mempool
+
+Short word for `Memory Pool`, which gets renewed much faster than mining.
+<br>
+`Mempool` is a place where all `unconfirmed` transactions are stored. In other words, the blocks that are not added into the blockchain, yet.
+<br>
+<pre>
+E.g.
+  []*Unconfirmed_Transactions{...}
+</pre>
+
+<br id="confirmed">
+
+> Confirmed
+
+A (transaction) block that is added to the blockchain by miners, after passing the miners' verification.
+<br>
+The opposite is `unconfirmed`, which means that the block is not added to the blockchain yet. These blocks will be remained at the `Mempool`.
+<br id="txfees">
+
+> Transaction Fees
+
+The fee or commission you pay to the miners for priortizing your `unconfirmed` transaction from the other non-fee transactions.<br>
+The more fees you pay, the chances are your `unconfirmed` transaction will be added to the blockchain more quicker than non-fee transactions.
+

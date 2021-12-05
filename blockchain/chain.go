@@ -38,7 +38,7 @@ func Blockchain() *blockchain {
 			// fmt.Printf("\nBEFORE\nNewHash: %x\nHeight: %d\nCheckpoint: %x", b.NewestHash, b.Height, checkPoint)
 			if checkPoint == nil {
 				// If there is no exisiting blockchain, create a new one.
-				b.AddBlock("YAGOO")
+				b.AddBlock()
 			} else {
 				// If there is checkpoint, then restore the previous blockchain from bytes, stored in the DB.
 				fmt.Println("\n\n**RESTORING THE BLOCKCHAIN FROM DB.**")
@@ -51,9 +51,9 @@ func Blockchain() *blockchain {
 	return b
 }
 
-func (b *blockchain) AddBlock(data string) {
+func (b *blockchain) AddBlock() {
 	// Save the block data to database.
-	block := createBlock(data, b.NewestHash, b.Height+1)
+	block := createBlock(b.NewestHash, b.Height+1)
 
 	// Renew the chain data.
 	b.NewestHash = block.Hash
@@ -131,3 +131,37 @@ func (b *blockchain) renewDifficulty() int {
 }
 
 // /PoW, setting difficulty.
+
+// Get all the transaction Outputs from each block.
+func (b *blockchain) txOuts() []*TxOut {
+	var txOuts []*TxOut
+	blocks := b.Blocks()
+	for _, block := range blocks {
+		for _, tx := range block.Transactions {
+			txOuts = append(txOuts, tx.TxOuts...)
+		}
+	}
+	return txOuts
+}
+
+// Get all the transaction outputs of a specific address or owner.
+func (b *blockchain) TxOutsByAddress(address string) []*TxOut {
+	var ownedTxOuts []*TxOut
+	txOuts := b.txOuts()
+	for _, txOut := range txOuts {
+		if txOut.Owner == address {
+			ownedTxOuts = append(ownedTxOuts, txOut)
+		}
+	}
+	return ownedTxOuts
+}
+
+// Get total balance of transaction outputs from a specific address.
+func (b *blockchain) BalanceByAddress(address string) int {
+	var totalBalance int
+	txOuts := b.TxOutsByAddress(address)
+	for _, txOut := range txOuts {
+		totalBalance += txOut.Balance
+	}
+	return totalBalance
+}
