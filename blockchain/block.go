@@ -27,8 +27,8 @@ func createBlock(previouHash string, height int) *Block {
 		Height:       height,
 		Difficulty:   Blockchain().SetDifficulty(),
 		Nonce:        0,
-		Transactions: []*Tx{makeCoinbaseTx("HOLOLIVE")},
 	}
+	block.Transactions = Mempool.TxToConfirm()
 	block.mine()
 	block.persist()
 	return &block

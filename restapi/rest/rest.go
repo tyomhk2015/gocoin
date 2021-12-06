@@ -30,6 +30,16 @@ var (
 
 type url string
 
+type balanceResponse struct {
+	Address string `json:"address"`
+	Balance int    `json:"balance"`
+}
+
+type addingTxPayload struct {
+	Receiver string `json:"receiver"`
+	Amount   int    `json:"amount"`
+}
+
 // Interface implementation
 func (u url) MarshalText() ([]byte, error) {
 	url := fmt.Sprintf("http://localhost%s%s", port, u)
@@ -54,7 +64,9 @@ func prepareHandlers() {
 	muxRouter.HandleFunc("/blocks", blocks).Methods("GET", "POST")         // If requests' methods are not specified by mux's Method(),
 	muxRouter.HandleFunc("/blocks/{hash:[a-f0-9]+}", block).Methods("GET") // Hash will be the URL parameter, the hexdecimal.
 	muxRouter.HandleFunc("/status", status).Methods("GET")
-	muxRouter.HandleFunc("/balance/{address}", balance).Methods("GET") // Show all transaction outputs of a specific address.
+	muxRouter.HandleFunc("/balance/{address}", balance).Methods("GET")  // Show all transaction outputs of a specific address.
+	muxRouter.HandleFunc("/mempool", mempool).Methods("GET")            // Show all unconfirmed transactions, mempool.
+	muxRouter.HandleFunc("/transactions", transactions).Methods("POST") // Add a transaction to the mempool.
 }
 
 func documentation(rw http.ResponseWriter, r *http.Request) {
@@ -89,6 +101,16 @@ func documentation(rw http.ResponseWriter, r *http.Request) {
 			URL:         url("/balance/{address}"),
 			Method:      "GET",
 			Description: "Show transaction outputs for an address.",
+		},
+		{
+			URL:         url("/mempool"),
+			Method:      "GET",
+			Description: "Show all unconfirmed transactions.",
+		},
+		{
+			URL:         url("/transactions"),
+			Method:      "POST",
+			Description: "Add a transaction to the mempool.",
 		},
 	}
 
@@ -179,7 +201,18 @@ func balance(rw http.ResponseWriter, r *http.Request) {
 	}
 }
 
-type balanceResponse struct {
-	Address string `json:"address"`
-	Balance int    `json:"balance"`
+func mempool(rw http.ResponseWriter, r *http.Request) {
+	// Show transactions in the mempool.
+	utils.HandleErr(json.NewEncoder(rw).Encode(blockchain.Mempool.Txs))
+}
+
+func transactions(rw http.ResponseWriter, r *http.Request) {
+	// Add a transaction in the mempool.
+	var payload addingTxPayload
+	utils.HandleErr(json.NewDecoder(r.Body).Decode(&payload))
+	err := blockchain.Mempool.AddTx(payload.Receiver, payload.Amount)
+	if err != nil {
+		json.NewEncoder(rw).Encode(errorResponse{"Not enough coins."})
+	}
+	rw.WriteHeader(http.StatusCreated)
 }
