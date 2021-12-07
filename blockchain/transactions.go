@@ -9,19 +9,27 @@ import (
 
 // Transaction struct
 type Tx struct {
-	Id        string   `json:"id"`
+	ID        string   `json:"id"`
 	Timestamp int      `json:"timestamp"`
 	TxIns     []*TxIn  `json:"txIns"`
 	TxOuts    []*TxOut `json:"txOuts"`
 }
 
 type TxIn struct {
-	Owner   string `json:"owner"`
-	Balance int    `json:"balance"`
+	TxID  string `json:"txID"`
+	Index int    `json:"index"`
+	Owner string `json:"owner"`
 }
 
 type TxOut struct {
 	Owner   string `json:"owner"`
+	Balance int    `json:"balance"`
+}
+
+// This structs is for finding 'unspent' transaction outputs.
+type UTxOut struct {
+	TxID    string `json:"txID"`
+	Index   int    `json:"index"`
 	Balance int    `json:"balance"`
 }
 
@@ -38,14 +46,14 @@ const (
 func makeCoinbaseTx(address string /* miner's address */) *Tx {
 	// Some coins are about to be sent from 'Metamask', the miner.
 	txIns := []*TxIn{
-		{"Metamask", minerReward},
+		{"", -1, "Binance"},
 	}
 	// Some coins are about to be comming from 'Metamask' to designated miner.
 	txOuts := []*TxOut{
 		{address, minerReward},
 	}
 	tx := Tx{
-		Id:        "",
+		ID:        "",
 		Timestamp: int(time.Now().Unix()),
 		TxIns:     txIns,
 		TxOuts:    txOuts,
@@ -55,50 +63,51 @@ func makeCoinbaseTx(address string /* miner's address */) *Tx {
 }
 
 func (t *Tx) getId() {
-	t.Id = utils.Hash(t)
+	t.ID = utils.Hash(t)
 }
 
+// Make a transaction with 'unspent' transactions.
 func makeTx(giver, receiver string, amount int) (*Tx, error) {
-	// Check if the user has enough coins for the transaction.
+	// Check if the giver has enough coins by checking UTxs.
 	if Blockchain().BalanceByAddress(giver) < amount {
-		return nil, errors.New("Not enough coins.")
+		return nil, errors.New("Not enough money!")
 	}
 
-	// Make as many Txs as possible until the 'amount' is met.
+	// Makes slices for inputs and outputs, a transaction.
+	var txOuts []*TxOut
 	var txIns []*TxIn
-	var txOuts []*TxOut // For giving some changes back to giver, the remainder after the 'amount'.
-	totalInput := 0
-	oldTxOuts := Blockchain().TxOutsByAddress(giver)
-	for _, txOut := range oldTxOuts {
-		if totalInput >= amount {
-			// If totalInput's accumulation satisfies amount
+	totalBalance := 0
+	uTxOuts := Blockchain().UTxOutsByAddress(giver)
+
+	// Amend the required amount by accumulating balance of 'unspent' transactions.
+	for _, uTxOut := range uTxOuts {
+		if totalBalance >= amount {
+			// If the accumulated balance satisfies required amount, quit the loop.
 			break
 		}
-		txIn := &TxIn{txOut.Owner, txOut.Balance}
-		txIns = append(txIns, txIn)
-		totalInput += txOut.Balance
+		txIn := &TxIn{uTxOut.TxID, uTxOut.Index, giver}
+		txIns = append(txIns, txIn) // This 'unspent' transaction will be used/referred as INPUT of transaction.
+		totalBalance += uTxOut.Balance
 	}
 
-	// Check if there is any remainder that the giver has to get back.
-	change := totalInput - amount
+	// Check if there is need for changes.
+	// If changes are needed, make a transaction output for it.
+	change := totalBalance - amount
 	if change > 0 {
-		// Make a new transaction for reclaiming remainder.
 		changeTxOut := &TxOut{giver, change}
 		txOuts = append(txOuts, changeTxOut)
 	}
 
-	// Create and add output transaction of 'quotient'.
+	// Add a transaction that meets the required amount of coins.
 	txOut := &TxOut{receiver, amount}
 	txOuts = append(txOuts, txOut)
-
-	// Make a transaction to add to the mempool.
 	tx := &Tx{
-		Id:        "",
+		ID:        "",
 		Timestamp: int(time.Now().Unix()),
 		TxIns:     txIns,
 		TxOuts:    txOuts,
 	}
-	tx.getId()
+	tx.getId() // Add an ID for this new transaction.
 	return tx, nil
 }
 
