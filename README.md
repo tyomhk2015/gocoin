@@ -69,6 +69,12 @@ Building blockchain and crypto currency with Go lang.
 * Continued implementing coinbase transactions.
 * Troubleshooting
 
+<a href="#user-content-day19">Day 19</a>　2021/12/6
+* Implemented mempool and confirming transactions in the mempool
+
+<a href="#user-content-day20">Day 20</a>　2021/12/7
+* WIP
+
 <hr>
 
 #### Resource 📖
@@ -486,4 +492,21 @@ Fixed the issue by erasing the postpended query. It looks like `http.Request` ha
 ...
   totalFlag := r.URL.Query().Get("total")
 ...
+</pre>
+
+### **<a href="javascript:void(0);" id="day19">Day 19</a>** ☀️
+2021/12/6
+
+* Implemented mempool and confirming transactions in the mempool
+
+### **<a href="javascript:void(0);" id="day20">Day 20</a>** ☀️
+2021/12/7
+
+* There are two types of transaction outputs, `spent` transaction outputs and `unspent` transaction outputs.
+<br> The `unspent` transaction outputs are the ones referred mostly at the future transaction inputs.
+<pre>
+REMEMBER
+- Transaction INPUTs are some transaction OUTPUTs that were created in the past.
+- Transaction INPUTs will refer to the past transaction OUTPUTs.
+- Once the transaction OUTPUTs are referred at transaction INPUTs, this means they are spent or consumed. 
 </pre>
