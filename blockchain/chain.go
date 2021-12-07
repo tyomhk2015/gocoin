@@ -144,22 +144,38 @@ func (b *blockchain) txOuts() []*TxOut {
 	return txOuts
 }
 
-// Get all the transaction outputs of a specific address or owner.
-func (b *blockchain) TxOutsByAddress(address string) []*TxOut {
-	var ownedTxOuts []*TxOut
-	txOuts := b.txOuts()
-	for _, txOut := range txOuts {
-		if txOut.Owner == address {
-			ownedTxOuts = append(ownedTxOuts, txOut)
+// Get all the 'unspent' transaction outputs of a specific address or owner.
+func (b *blockchain) UTxOutsByAddress(address string) []*UTxOut {
+	var unspentTxOuts []*UTxOut
+	txsReferredAtInput := make(map[string]bool)
+	for _, block := range b.Blocks() {
+		for _, tx := range block.Transactions {
+			for _, txIn := range tx.TxIns {
+				// Collect IDs of the transactions that were referred at INPUT,
+				// of the specifed user or wallet.
+				if txIn.Owner == address {
+					txsReferredAtInput[txIn.TxID] = true // A flag, meaning this Tx has been 'referred' at INPUT.
+				}
+			}
+			for index, txOut := range tx.TxOuts {
+				// Collect transactions that were not referred at INPUT,
+				// of the specifed user or wallet.
+				if txOut.Owner == address {
+					_, referred := txsReferredAtInput[tx.ID]
+					if !referred {
+						unspentTxOuts = append(unspentTxOuts, &UTxOut{tx.ID, index, txOut.Balance})
+					}
+				}
+			}
 		}
 	}
-	return ownedTxOuts
+	return unspentTxOuts
 }
 
-// Get total balance of transaction outputs from a specific address.
+// Get total balance of 'unspent' transaction outputs from a specific address.
 func (b *blockchain) BalanceByAddress(address string) int {
 	var totalBalance int
-	txOuts := b.TxOutsByAddress(address)
+	txOuts := b.UTxOutsByAddress(address)
 	for _, txOut := range txOuts {
 		totalBalance += txOut.Balance
 	}
