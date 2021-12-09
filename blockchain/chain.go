@@ -22,48 +22,60 @@ var b *blockchain
 var once sync.Once
 
 func Blockchain() *blockchain {
-	if b == nil {
-		// When the blockchain is request and if the blockchain is not initialized before
-		// or requested for the first time, create a new blockchain.
-		once.Do(func() {
-			// Run this part only once, even though
-			// this has been called several times by goroutine.
-			// PoV: When the blockchain is created for the first time,
-			//    : or the user is using the blockchain for the first time.
-			b = &blockchain{Height: 0}
+	// if b == nil {
+	// 	// When the blockchain is request and if the blockchain is not initialized before
+	// 	// or requested for the first time, create a new blockchain.
+	// 	once.Do(func() {
+	// 		// Run this part only once, even though
+	// 		// this has been called several times by goroutine.
+	// 		// PoV: When the blockchain is created for the first time,
+	// 		//    : or the user is using the blockchain for the first time.
+	// 		b = &blockchain{Height: 0}
 
-			// Search for the checkpoint on the database,
-			// meaning this checks if previous blockchain is in the DB.
-			checkPoint := db.CheckPoint()
-			// fmt.Printf("\nBEFORE\nNewHash: %x\nHeight: %d\nCheckpoint: %x", b.NewestHash, b.Height, checkPoint)
-			if checkPoint == nil {
-				// If there is no exisiting blockchain, create a new one.
-				b.AddBlock()
-			} else {
-				// If there is checkpoint, then restore the previous blockchain from bytes, stored in the DB.
-				fmt.Println("\n\n**RESTORING THE BLOCKCHAIN FROM DB.**")
-				b.restoreBlockChain(checkPoint)
-			}
-		})
-		// fmt.Printf("\nAFTER\nNewHash: %x\nHeight: %d\n", b.NewestHash, b.Height)
-	}
-	// fmt.Println(b.NewestHash)
+	// 		// Search for the checkpoint on the database,
+	// 		// meaning this checks if previous blockchain is in the DB.
+	// 		checkPoint := db.CheckPoint()
+	// 		// fmt.Printf("\nBEFORE\nNewHash: %x\nHeight: %d\nCheckpoint: %x", b.NewestHash, b.Height, checkPoint)
+	// 		if checkPoint == nil {
+	// 			// If there is no exisiting blockchain, create a new one.
+	// 			b.AddBlock()
+	// 		} else {
+	// 			// If there is checkpoint, then restore the previous blockchain from bytes, stored in the DB.
+	// 			fmt.Println("\n\n**RESTORING THE BLOCKCHAIN FROM DB.**")
+	// 			b.restoreBlockChain(checkPoint)
+	// 		}
+	// 	})
+	// 	// fmt.Printf("\nAFTER\nNewHash: %x\nHeight: %d\n", b.NewestHash, b.Height)
+	// }
+	// // fmt.Println(b.NewestHash)
+	// return b
+
+	once.Do(func() {
+		b = &blockchain{Height: 0}
+		checkPoint := db.CheckPoint()
+		if checkPoint == nil {
+			b.AddBlock()
+		} else {
+			fmt.Println("\n\n**RESTORING THE BLOCKCHAIN FROM DB.**")
+			b.restoreBlockChain(checkPoint)
+		}
+	})
 	return b
 }
 
 func (b *blockchain) AddBlock() {
 	// Save the block data to database.
-	block := createBlock(b.NewestHash, b.Height+1)
+	block := createBlock(b.NewestHash, b.Height+1, SetDifficulty(b))
 
 	// Renew the chain data.
 	b.NewestHash = block.Hash
 	b.Height = block.Height
 	b.Difficulty = block.Difficulty
-	b.persist()
+	persistBlockchain(b)
 }
 
 // Save the blockchain in bytes.
-func (b *blockchain) persist() {
+func persistBlockchain(b *blockchain) {
 	db.SaveCheckPoint(utils.ToBytes(b))
 }
 
@@ -81,7 +93,7 @@ func (b *blockchain) restoreBlockChain(data []byte) {
 // Get all the blocks by using the recent block's previous hash
 // and iterate the process until there are no more blocks left.
 // Traverse from recent block to the first block on the blockchain.
-func (b *blockchain) Blocks() []*Block {
+func Blocks(b *blockchain) []*Block {
 	var retrievedBlocks []*Block // A temporary storage for collecting retrieved blocks.
 	hashCursor := b.NewestHash
 	for {
@@ -104,19 +116,19 @@ const (
 	timeFlexibility    int = 2
 )
 
-func (b *blockchain) SetDifficulty() int {
+func SetDifficulty(b *blockchain) int {
 	if b.Height == 0 {
 		// Set difficulty to 2, when the blockchain is newly created.
 		return defaultDifficulty
 	} else if b.Height%difficultyInterval == 0 {
 		// Renew the difficulty.
-		return b.renewDifficulty()
+		return renewDifficulty(b)
 	}
 	return b.Difficulty
 }
 
-func (b *blockchain) renewDifficulty() int {
-	allBlocks := b.Blocks()
+func renewDifficulty(b *blockchain) int {
+	allBlocks := Blocks(b)
 	newestBlock := allBlocks[0] // The blocks are in descending order, the newest one is at the start.
 	lastDifficultyBlock := allBlocks[difficultyInterval-1]
 	elapsedTime := (newestBlock.TimeStamp - lastDifficultyBlock.TimeStamp) / 60 // Calculate in minutes.
@@ -135,7 +147,7 @@ func (b *blockchain) renewDifficulty() int {
 // Get all the transaction Outputs from each block.
 func (b *blockchain) txOuts() []*TxOut {
 	var txOuts []*TxOut
-	blocks := b.Blocks()
+	blocks := Blocks(b)
 	for _, block := range blocks {
 		for _, tx := range block.Transactions {
 			txOuts = append(txOuts, tx.TxOuts...)
@@ -145,10 +157,10 @@ func (b *blockchain) txOuts() []*TxOut {
 }
 
 // Get all the 'unspent' transaction outputs of a specific address or owner.
-func (b *blockchain) UTxOutsByAddress(address string) []*UTxOut {
+func UTxOutsByAddress(address string, b *blockchain) []*UTxOut {
 	var unspentTxOuts []*UTxOut
 	txsReferredAtInput := make(map[string]bool)
-	for _, block := range b.Blocks() {
+	for _, block := range Blocks(b) {
 		for _, tx := range block.Transactions {
 			for _, txIn := range tx.TxIns {
 				// Collect IDs of the transactions that were referred at INPUT,
@@ -163,7 +175,12 @@ func (b *blockchain) UTxOutsByAddress(address string) []*UTxOut {
 				if txOut.Owner == address {
 					_, referred := txsReferredAtInput[tx.ID]
 					if !referred {
-						unspentTxOuts = append(unspentTxOuts, &UTxOut{tx.ID, index, txOut.Balance})
+						// Check if UTx are used in mempool.
+						uTxOut := &UTxOut{tx.ID, index, txOut.Balance}
+						if !isOnMempool(uTxOut) {
+							// Add UTx that are not used in mempool.
+							unspentTxOuts = append(unspentTxOuts, &UTxOut{tx.ID, index, txOut.Balance})
+						}
 					}
 				}
 			}
@@ -173,11 +190,25 @@ func (b *blockchain) UTxOutsByAddress(address string) []*UTxOut {
 }
 
 // Get total balance of 'unspent' transaction outputs from a specific address.
-func (b *blockchain) BalanceByAddress(address string) int {
+func BalanceByAddress(address string, b *blockchain) int {
 	var totalBalance int
-	txOuts := b.UTxOutsByAddress(address)
+	txOuts := UTxOutsByAddress(address, b)
 	for _, txOut := range txOuts {
 		totalBalance += txOut.Balance
 	}
 	return totalBalance
+}
+
+func isOnMempool(uTxOut *UTxOut) bool {
+	exists := false
+Outer: // Label, use for stopping nested for loops. This can break loops anywhere.
+	for _, tx := range Mempool.Txs {
+		for _, txIn := range tx.TxIns {
+			if txIn.TxID == uTxOut.TxID && txIn.Index == uTxOut.Index {
+				exists = true
+				break Outer
+			}
+		}
+	}
+	return exists
 }

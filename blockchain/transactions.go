@@ -69,7 +69,7 @@ func (t *Tx) getId() {
 // Make a transaction with 'unspent' transactions.
 func makeTx(giver, receiver string, amount int) (*Tx, error) {
 	// Check if the giver has enough coins by checking UTxs.
-	if Blockchain().BalanceByAddress(giver) < amount {
+	if BalanceByAddress(giver, Blockchain()) < amount {
 		return nil, errors.New("Not enough money!")
 	}
 
@@ -77,7 +77,7 @@ func makeTx(giver, receiver string, amount int) (*Tx, error) {
 	var txOuts []*TxOut
 	var txIns []*TxIn
 	totalBalance := 0
-	uTxOuts := Blockchain().UTxOutsByAddress(giver)
+	uTxOuts := UTxOutsByAddress(giver, Blockchain())
 
 	// Amend the required amount by accumulating balance of 'unspent' transactions.
 	for _, uTxOut := range uTxOuts {

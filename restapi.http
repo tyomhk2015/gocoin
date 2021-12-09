@@ -60,8 +60,7 @@ POST http://localhost:8888/blocks
 GET http://localhost:8888/blocks/000a45c0cf1ebb68d2f84e2874440063fd7fca4bdaab006c52ade91775a84561
 
 ### View the balance of an address.
-GET http://localhost:8888/balance/NATSUIRO MATSURI?total=true
-
+GET http://localhost:8888/balance/HOLOLIVE?total=true
 ### View all unconfirmed transactions in the mempool.
 GET http://localhost:8888/mempool
 
@@ -71,5 +70,5 @@ POST http://localhost:8888/transactions
 
 {
   "Receiver": "NATSUIRO MATSURI",
-  "Amount": 3
+  "Amount": 7
 }
