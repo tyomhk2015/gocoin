@@ -73,7 +73,13 @@ Building blockchain and crypto currency with Go lang.
 * Implemented mempool and confirming transactions in the mempool
 
 <a href="#user-content-day20">Day 20</a>　2021/12/7
-* WIP
+* Implementing 'unspent' transactions.
+
+<a href="#user-content-day21">Day 21</a>　2021/12/9
+* Collaborating 'unspent' transactions and mempool.
+* Label
+* Deadlock
+* 🌟 Finished implementing transaction feature, including 'unspent' transactions, mempool, and preventing deadlock.
 
 <hr>
 
@@ -510,3 +516,71 @@ REMEMBER
 - Transaction INPUTs will refer to the past transaction OUTPUTs.
 - Once the transaction OUTPUTs are referred at transaction INPUTs, this means they are spent or consumed. 
 </pre>
+
+### **<a href="javascript:void(0);" id="day21">Day 21</a>** ☀️
+2021/12/9
+
+* Collaborating 'unspent' transactions and mempool.
+<br> Making sure than no more transactions to be excecuted when the unconfirmed transactions' input amount exceeds the owner's balance.
+
+💡 Label
+<br>
+For stopping the nested loops at the desired spot.
+<pre>
+func isOnMempool(uTxOut *UTxOut) bool {
+  exists := false
+Outer: // <<< Label
+  for _, tx := range Mempool.Txs {
+    for _, txIn := range tx.TxIns {
+      if txIn.TxID == uTxOut.TxID && txIn.Index == uTxOut.Index {
+        exists = true
+        break Outer
+      }
+    }
+  }
+  return exists
+}
+</pre>
+
+💡 A tip for deciding function and method.
+<br>
+If your function `MUTATES` the struct, it should be a method. Otherwise, shouldn't be a method.
+`Mutate` means the inner of the struct changes. E.g) The value of field changes, object changes etc.
+<pre>
+// An example of a method.
+func (b *blockchain) txOuts() []*TxOut {
+  var txOuts []*TxOut
+  blocks := Blocks(b)
+  for _, block := range blocks {
+    for _, tx := range block.Transactions {
+      txOuts = append(txOuts, tx.TxOuts...)
+    }
+  }  
+  return txOuts
+}
+
+// An example of function
+func BalanceByAddress(address string, b *blockchain) int {
+  var totalBalance int
+  txOuts := UTxOutsByAddress(address, b)
+  for _, txOut := range txOuts {
+    totalBalance += txOut.Balance
+  }
+  return totalBalance
+}
+</pre>
+
+💡 DeadLock
+* Status when the program cannot proceeed.
+<br> When the do func() inside the Do(), does not finish and Do() is being called again, it will cause a deadlock. 
+<pre>
+Do(func{
+  ...
+  Do(func{
+    // Being called, but returning nothing, yet.
+  })
+  ...
+})
+</pre>
+
+* 🌟 Finished implementing transaction feature, including 'unspent' transactions, mempool, and preventing deadlock.
