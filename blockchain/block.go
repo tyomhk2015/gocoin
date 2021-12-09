@@ -20,12 +20,12 @@ type Block struct {
 	Transactions []*Tx  `json:"transactions"`
 }
 
-func createBlock(previouHash string, height int) *Block {
+func createBlock(previouHash string, height int, diff int) *Block {
 	block := Block{
 		Hash:         "",
 		PreviousHash: previouHash,
 		Height:       height,
-		Difficulty:   Blockchain().SetDifficulty(),
+		Difficulty:   diff,
 		Nonce:        0,
 	}
 	block.Transactions = Mempool.TxToConfirm()
