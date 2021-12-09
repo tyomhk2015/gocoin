@@ -54,7 +54,7 @@ func handleAdd(rw http.ResponseWriter, r *http.Request) {
 
 func handleHome(rw http.ResponseWriter, r *http.Request) {
 	// http.ResponseWriter: The writer of data to send to the users.
-	data := homeData{"This is running on the Go server.", blockchain.Blockchain().Blocks()}
+	data := homeData{"This is running on the Go server.", blockchain.Blocks(blockchain.Blockchain())}
 	templates.ExecuteTemplate(rw, "home", data)
 }
 
