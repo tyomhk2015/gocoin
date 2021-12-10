@@ -1,5 +1,8 @@
-# gocoin
+# GoCoin
 Building blockchain and crypto currency with Go lang.
+
+Why am I doing this?
+To get used to Go lang and blockchain.
 
 ## Summary 🔎
 
@@ -80,6 +83,11 @@ Building blockchain and crypto currency with Go lang.
 * Label
 * Deadlock
 * 🌟 Finished implementing transaction feature, including 'unspent' transactions, mempool, and preventing deadlock.
+* Started working on wallets.
+
+<a href="#user-content-day22">Day 22</a>　2021/12/10
+* Continued working on wallets.
+
 
 <hr>
 
@@ -584,3 +592,24 @@ Do(func{
 </pre>
 
 * 🌟 Finished implementing transaction feature, including 'unspent' transactions, mempool, and preventing deadlock.
+
+* Started working on wallets.
+<br>Signatures(private keys and public keys) , persistence of wallets, and signatures and verifications applied to transactions.
+
+### **<a href="javascript:void(0);" id="day22">Day 22</a>** ☀️
+2021/12/10
+
+* Wallets
+<br> 1. Hash a message or a block.
+<br> 2. Generate a pair of keys, a private Key & a public key.
+<br> 3. Sign the hash.
+<pre>
+  Hashed message + Private Key => Signature
+</pre>
+<br> Private Key: For signing.
+<br> Saved as a file. (An example of a Cold Wallet)
+<br> Public Key: Verifiying signatures.
+<br> Verification process: 
+<pre>
+  Hashed message + Signature + Public Key => True / False (Verified or not)
+</pre>
