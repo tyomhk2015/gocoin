@@ -88,6 +88,8 @@ To get used to Go lang and blockchain.
 <a href="#user-content-day22">Day 22</a>　2021/12/10
 * Continued working on wallets.
 
+<a href="#user-content-day23">Day 23</a>　2021/12/13
+* Continued working on wallets.
 
 <hr>
 
@@ -599,7 +601,7 @@ Do(func{
 ### **<a href="javascript:void(0);" id="day22">Day 22</a>** ☀️
 2021/12/10
 
-* Wallets
+* Continued on Wallets
 <br> 1. Hash a message or a block.
 <br> 2. Generate a pair of keys, a private Key & a public key.
 <br> 3. Sign the hash.
@@ -613,3 +615,11 @@ Do(func{
 <pre>
   Hashed message + Signature + Public Key => True / False (Verified or not)
 </pre>
+
+### **<a href="javascript:void(0);" id="day23">Day 23</a>** ☀️
+2021/12/13
+
+* Continued on Wallets
+* Q. What does 'r' and 's' means in ECDSA?
+<br>Maybe this must be the start point.
+<br>https://crypto.stackexchange.com/questions/50716/what-is-the-relation-between-x-y-and-r-s-in-an-ecdsa-signature

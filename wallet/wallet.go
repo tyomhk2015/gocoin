@@ -7,18 +7,49 @@ import (
 	"crypto/x509"
 	"encoding/hex"
 	"fmt"
+	"math/big"
 
 	"github.com/tyomhk2015/gocoin/utils"
 )
 
 const (
 	hashedMessage string = "6586f3af7a015f2884e5e651539b18efe35d587d896757161442b8068c1602ca" // Subsitute of transaction ID.
-	signature     string = "67e32ce67cc0607c788ab11fb3df4d2affe1464ba32be8166653c666e447e91e7e770ec00ce36ee825c19e4af1f14ffbdca28962e801620910d697e5c22f0d43"
-	privateKey    string = "3077020101042096f6f2dc95081a755b461b20b1419a205c1704354957b86ceba6ae8a3121aa84a00a06082a8648ce3d030107a1440342000443cfe2873a3ab81c5fe1972d72986570e631fed225c4413f49f13d943be20ea3740ac1098e0c60abd7f6384207a769886cb489e452df1707b21bbd076c0f67c6"
+	signature     string = "3a4be3a3146db9f8aae3b185b1e3505a1393a8ca608354271e135115f3a29b9542468eb5d5e93383f5b92bb7f1043f37f29cc46b80cda5771249ad5ede297691"
+	privateKey    string = "3077020101042003da0ad9abf4460301350004ca81eaccbd12fbdacf5c0b70f97a33a205497005a00a06082a8648ce3d030107a1440342000467b20e00a65ec10d51e79df88efe25ebafbb21520898edf41ae7c6645df3c72006d6e206398fc0395f7ec462bb10112c477a2098fe1e3ba73aba24c3376d49c8"
 )
 
 func Start() {
+	restoreKeySign()
+}
 
+func restoreKeySign() {
+	// Check if the loaded hashes are encrypted in hexadecimal.
+	// If the hex code has been manipulated, an error will be returned.
+	privateKeyBytes, err := hex.DecodeString(privateKey)
+	utils.HandleErr(err)
+
+	// Take private key bytes to restore the key
+	restoredPrivateKey, err := x509.ParseECPrivateKey(privateKeyBytes)
+	utils.HandleErr(err)
+
+	// Signature is in [[32],[32]]
+	// Restore the signature
+	signatureByte, err := hex.DecodeString(signature)
+	utils.HandleErr(err)
+
+	leftBytes := signatureByte[:len(signatureByte)/2]  // From 0 to designated index.
+	rightBytes := signatureByte[len(signatureByte)/2:] // From designated index to the end.
+
+	var bigR, bigS = big.Int{}, big.Int{}
+
+	bigR.SetBytes(leftBytes)
+	bigS.SetBytes(rightBytes)
+
+	recoveredHashByte, err := hex.DecodeString(hashedMessage)
+	utils.HandleErr(err)
+
+	isVerified := ecdsa.Verify(&restoredPrivateKey.PublicKey, recoveredHashByte, &bigR, &bigS)
+	fmt.Println(isVerified)
 }
 
 func createMsgKeySignVerification() {
@@ -45,5 +76,4 @@ func createMsgKeySignVerification() {
 	// Verification
 	isVerified := ecdsa.Verify(&privateKey.PublicKey, HashMsgAsByte, r, s)
 	fmt.Println(isVerified)
-
 }
