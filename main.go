@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	wallet.Start()
+	wallet.Wallet()
 }
